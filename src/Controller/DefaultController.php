@@ -76,17 +76,6 @@ class DefaultController extends AbstractController
     public function inscription(Request $request)
     {
         $form = $this->createForm(InscriptionType::class);
-        /*$form = $this->createFormBuilder(User::class);
-        $form->add('id_user',HiddenType::class)
-            ->add('user_nom',TextType::class, array("label"=>"Nom : "))
-            ->add('user_prenom',TextType::class, array("label"=>"Prenom : "))
-            ->add('user_email',TextType::class, array("label"=>"E-Mail : "))
-            ->add('user_date_arrivee',HiddenType::class)
-            ->add('user_role',HiddenType::class)
-            ->add('user_username',TextType::class, array("label" => "Nom d'utilisateur : "))
-            ->add('user_password',PasswordType::class, array("label" => "Mot de passe : "))
-            ->add('submit', SubmitType::class, array("label" => "Rejoindre l'élite !"))
-            ->getForm();*/
 
         $form->handleRequest($request);
 
@@ -96,7 +85,9 @@ class DefaultController extends AbstractController
             $data = $form->getData();
             $em->persist($data);
             $em->flush();
-            return $this->redirectToRoute('connexion');
+            //return $this->redirectToRoute('connexion');
+            dump($data);
+            dump($stop);
         }
 
         return $this->render('menu/inscription.html.twig', [

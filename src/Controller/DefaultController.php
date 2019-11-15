@@ -4,21 +4,17 @@ namespace App\Controller;
 
 use App\Form\InscriptionType;
 use App\src\Entity\User;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
     /**
-     * @Route("/connexion", name="homepage")
+     * @Route("/connexion", name="connexion")
      */
     public function index()
     {
@@ -31,7 +27,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/connexionValidation", name="connexion")
+     * @Route("/connexionValidation", name="connexion_validation")
      * @param Request $request
      * @return Response
      */
@@ -40,7 +36,7 @@ class DefaultController extends AbstractController
         $username = $request->get('username');
         $mdp = $request->get('mdp');
 
-        if($username != "" && $mdp != "") {
+        if ($username != "" && $mdp != "") {
 
             $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
 
@@ -58,7 +54,7 @@ class DefaultController extends AbstractController
                 //$session->set("user", $user);
             }
 
-        }else{
+        } else {
             $response = false;
         }
         //$user = $em->getRepository(User::class)->findAll();
@@ -83,17 +79,75 @@ class DefaultController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $em->persist($data);
-            $em->flush();
+            /* $user = new User();
+             $user->setUserNom($data["user_nom"])
+                 ->setUserPrenom($data["user_prenom"])
+                 ->setUserEmail($data["user_email"])
+                 ->setUserUsername($data["user_username"])
+                 ->setUserPassword($data["user_password"])
+                 ->setUserDateArrivee(new DateTime(date('Y-m-d H:i:s', strtotime('now +1 hour'))))
+                 ->setUserRole("USER");*/
+
+            $date = date('Y-m-d H:i:s', strtotime('now +1 hour'));
+            $sql = "INSERT INTO systeme_information.user (user_nom, user_prenom, user_email, user_date_arrivee, user_role, user_username, user_password) values (" . $data['user_nom'] . "," . $data['user_prenom'] . "," . $data['user_email'] . "," . $date . ",'USER'," . $data['user_username'] . "," . $data['user_password'] . ")";
+
+            dump($sql);
+
+            /*$em->persist($user);
+            $em->flush();*/
             //return $this->redirectToRoute('connexion');
-            dump($data);
-            dump($stop);
         }
 
         return $this->render('menu/inscription.html.twig', [
             'controller_name' => 'DefaultController',
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/inscription/validation", name="inscription_validation")
+     * @param Request $request
+     * @return Response
+     */
+    public function inscriptionValidation(Request $request)
+    {
+        $nom = $request->get('nom');
+        $prenom = $request->get('prenom');
+        $mail = $request->get('mail');
+        $username = $request->get('username');
+        $mdp = $request->get('mdp');
+
+        $sql = "SELECT * FROM systeme_information.user where user_username= '$username' or user_email = '$mail'";
+        $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
+
+        $statment = $em->getConnection()->prepare($sql);
+        $statment->execute();
+        $user = $statment->fetchAll();
+
+        if ($user == []) {
+            $date = date('Y-m-d H:i:s', strtotime('now +1 hour'));
+            $sql = "INSERT INTO systeme_information.user (user_nom, user_prenom, user_email, user_date_arrivee, user_role, user_username, user_password) values ('$nom','$prenom','$mail','$date','USER','$username','$mdp')";
+            $statment = $em->getConnection()->prepare($sql);
+            $statment->execute();
+
+            $response = "ok";
+        } else {
+            if (sizeof($user) == 2) {
+                $response = "Nom d'utilisateur et adresse mail déja utilisés !";
+            } else {
+                $user = $user[0];
+                if ($user["user_username"] == $username and $user["user_email"] == $mail) {
+                    $response = "Nom d'utilisateur et adresse mail déja utilisés !";
+                } else if($user["user_email"] == $mail) {
+                    $response = "Adresse mail déja utilisée !";
+                }else{
+                    $response = "Nom d'utilisateur déja utilisé !";
+                }
+            }
+            //$session->set("user", $user);
+        }
+
+        return new JsonResponse($response);
     }
 
     /**

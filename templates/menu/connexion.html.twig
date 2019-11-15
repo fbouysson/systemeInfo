@@ -10,7 +10,7 @@
     <title>UCO : connexion</title>
 </head>
 <body>
-<div class="main">
+<div class="main" style="border: 2px solid lightgrey; padding: 20px">
     <h1>Ultimate Chat Online</h1>
     <div>
         <label for="username">Nom d'utilisateur</label>
@@ -22,7 +22,7 @@
         <input id="mdp" type="password" class="styl"/>
     </div>
 
-    <div>
+    <div style="margin-bottom: 10px">
         <button class="btn btn-primary" onclick="connexion()" style="position: absolute; left: 30%">Connexion</button>
         <button class="btn btn-light" onclick="window.location = '{{ asset('inscription') }}'" style="position: absolute; right: 30%">Inscription</button>
     </div>
@@ -52,6 +52,10 @@
                 //delay: 2000
                 autohide: false
             });
+
+            $("body").on("click",function () {
+                $("#alert").toast('hide');
+            })
         });
 
         let inputs = $('input');

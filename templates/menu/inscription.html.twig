@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="fr">
-<link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
-<link rel="stylesheet" href="{{asset('css/bootstrap-grid.css')}}">
-<link rel="stylesheet" href="{{asset('css/bootstrap-reboot.css')}}">
-<link rel="stylesheet" href="{{asset('css/inscription.css')}}">
-<link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/onglet.png') }}" />
+<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+<link rel="stylesheet" href="{{ asset('css/bootstrap-grid.css') }}">
+<link rel="stylesheet" href="{{ asset('css/bootstrap-reboot.css') }}">
+<link rel="stylesheet" href="{{ asset('css/inscription.css') }}">
+<link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/onglet.png') }}"/>
 <head>
     <meta charset="UTF-8"/>
     <title>UCO : inscription</title>
 </head>
 <body>
-<div>
+<div style="margin: 20px 20% 0 20%; overflow-x: hidden; border: 2px solid lightgrey; padding: 20px    ">
     <h1>Ultimate Chat Online</h1>
     <br>
     <div class="row" style="text-align: center">
@@ -36,36 +36,38 @@
                 </div>
 
                 <div class="col-12 inputInsc">
-                    {{ form_row(form.user_password, {'attr': {'id': 'passeword'}}) }}
+                    {{ form_row(form.user_password) }}
                 </div>
 
                 <div class="col-12 inputInsc">
-                    <label for="comfirmMdp">Comfirmer mot de passe : </label><input type="password" class="styl" id="comfirmMdp">
+                    <label for="comfirmMdp">Comfirmer mot de passe : </label><input autocomplete="false" type="password" class="styl"
+                                                                                    id="comfirmMdp">
                 </div>
             </div>
             {{ form_end(form) }}
-            <button class="btn btn-primary" onclick="inscription()"> Rejoindre l'élite !</button>
+            <button class="btn btn-primary" onclick="check()" style="margin-bottom: 10px"> Rejoindre l'élite !
+            </button>
         </div>
     </div>
 </div>
 
-<div id="alert" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="margin: 10px">
+<div id="alert2" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="margin: 10px;position:absolute;top: 0">
     <div class="toast-header">
         <strong class="mr-auto" style="font-size: 12px">Erreur !</strong>
         <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="toast-body" style="font-size: 12px; background-color: dimgrey;">
-        Les mots de passe ne sont pas identique !
+    <div class="toast-body" style="font-size: 12px; background-color: dimgrey;" id="erreur">
+
     </div>
 </div>
 </body>
 
-<script type="text/javascript" src="{{asset('js/util.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/jQuery.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/bootstrap.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/bootstrap.bundle.js')}}"></script>
+<script type="text/javascript" src="{{ asset('js/util.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jQuery.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/bootstrap.bundle.js') }}"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -73,44 +75,86 @@
             //delay: 2000
             autohide: false
         });
+
+        $("body").on("click",function () {
+            $("#alert2").toast('hide');
+        })
     });
 
     let inputs = $('input');
     /** Code By Webdevtrick ( https://webdevtrick.com )  **/
-    inputs.on('focusin', function() {
+    inputs.on('focusin', function () {
         $(this).parent().find('label').addClass('active');
     });
 
-    inputs.on('focusout', function() {
+    inputs.on('focusout', function () {
         if (!this.value) {
             $(this).parent().find('label').removeClass('active');
         }
     });
 
     /** Code By Webdevtrick ( https://webdevtrick.com )  **/
-    inputs.on('focusin', function() {
+    inputs.on('focusin', function () {
         $(this).parent().find('label').addClass('active');
     });
 
-    inputs.on('focusout', function() {
+    inputs.on('focusout', function () {
         if (!this.value) {
             $(this).parent().find('label').removeClass('active');
         }
     });
 
-    function inscription() {
-        let toast = document.getElementById("alert");
-        toast.toast("hide");
-        let form = document.getElementById("formInscription");
-        let mdp = document.getElementById("passeword");
-        let comfirm = document.getElementById("comfirmMdp");
+    function check() {
+        let form = document.getElementById('formInscription');
 
-        if(mdp === comfirm){
-            //form.submit();
+        let nom = document.getElementById("inscription_user_nom");
+        let prenom = document.getElementById("inscription_user_prenom");
+        let mail = document.getElementById("inscription_user_email");
+
+        let username = document.getElementById("inscription_user_username");
+        let mdp = document.getElementById('inscription_user_password');
+        let comfirm = document.getElementById('comfirmMdp');
+
+        let erreur = "";
+
+        nom.value === "" ? erreur += "Veuillez renseigner un nom. \n\n" : null;
+        prenom.value === "" ? erreur += "Veuillez renseigner un prenom. \n\n" : null;
+        mail.value === "" ? erreur += "Veuillez renseigner un e-mail. \n\n" : null;
+        username.value = "" ? erreur += "Veuillez renseigner un nom d'utilisateur. \n\n" : null;
+        mdp.value === "" ? erreur += "Veuillez renseigner un mot de pass. \n\n" : null;
+        comfirm.value === "" ? erreur += "Veuillez comformer votre mot de passe. \n\n" : null;
+
+        if(erreur === "") {
+            if (mdp.value === comfirm.value) {
+                let Route = '{{ path('inscription_validation') }}';
+                $.ajax({
+                    url: Route,
+                    type: 'POST',
+                    data: "username=" + username.value +
+                        "&mail=" + mail.value +
+                        "&nom=" + nom.value +
+                        "&prenom=" + prenom.value +
+                        "&mdp=" + mdp.value ,
+                    dataType: 'json',
+
+                    success: function (json) {
+                        if (json !== "ok") {
+                            document.getElementById("erreur").innerText = json  ;
+                            $("#alert2").toast('show');
+                        } else {
+                            alert("Inscription réussi.\n Vous allez être redirigé vers la page de connexion.");
+                            window.location = '{{ path('connexion') }}';
+                        }
+                    }
+                });
+            } else {
+                document.getElementById("erreur").innerText = "Les mots de passe ne sont pas identiques.";
+                $("#alert2").toast('show');
+            }
         }else{
-            toast.toast("show");
+            document.getElementById("erreur").innerText = erreur;
+            $("#alert2").toast('show');
         }
     }
-
 </script>
 </html>

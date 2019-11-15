@@ -2,6 +2,7 @@
 
 namespace App\src\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,7 +44,7 @@ class User
     private $userEmail;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="user_date_arrivee", type="date", nullable=false)
      */

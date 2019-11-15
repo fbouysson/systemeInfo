@@ -1,10 +1,14 @@
-*************************************** PROJET CHAT EN DIRECT ******************************************
+*************************************** PROJET CHAT EN DIRECT *******************************************
 
-******************************** SYSTEMES D'INFORMATIONS - ITII 21 Info ********************************
+°o Projet réalisé par BOUYSSON Florian, ENJOLRAS Clément et HYEST Arthur - GROUPE Straddie's Survivors o°
 
-*********************** /!\ CE PROJET EST EN DEVELOPPEMENT ET NON FONCTIONNEL /!\ **********************
+******************************** SYSTEMES D'INFORMATIONS - ITII 21 Info *********************************
 
-********************************************************************************************************
+*********************** /!\ CE PROJET EST EN DEVELOPPEMENT ET NON FONCTIONNEL /!\ ***********************
+
+*********************************************************************************************************
+
+__________________________________ PROJET : ULTIMATE CHAT ONLINE ________________________________________
 
 OBJECTIFS DU PROJET :
 
@@ -15,14 +19,14 @@ Les utilisateurs auront le statut "connectés", "absent" ou "hors ligne" affich�
 auront rejoint au préalabre.
 Il y aura un historique des messages, avec la fonctionnalité de messages non lus par salon.
 
-********************************************************************************************************
+*********************************************************************************************************
 
 TECHNOLOGIES UTILISEES :
 
 Développement : PHP pour l'interface web, MySQL la DB, JS pour certains scripts
 Réseau : 4 VM (3 windows serveur, 1 windows client), 3 routeurs, 2 switch
 
-********************************************************************************************************
+*********************************************************************************************************
 
 METHODE DE COMPILATION/INSTALLATION
 

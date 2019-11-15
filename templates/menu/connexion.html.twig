@@ -23,14 +23,14 @@
     </div>
 
     <div>
-        <button class="btn btn-primary" onclick="connexion()" style="position: absolute; left: 20%">Connexion</button>
-        <button class="btn btn-primary" onclick="window.loca()" style="position: absolute; left: 20%">Connexion</button>
+        <button class="btn btn-primary" onclick="connexion()" style="position: absolute; left: 30%">Connexion</button>
+        <button class="btn btn-light" onclick="window.location = '{{ asset('inscription') }}'" style="position: absolute; right: 30%">Inscription</button>
     </div>
 </div>
 
     <div id="alert" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="margin: 10px">
         <div class="toast-header">
-            <strong class="mr-auto" style="font-size: 12px">Erreur de connection !</strong>
+            <strong class="mr-auto" style="font-size: 12px">Erreur de connexion !</strong>
             <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -93,9 +93,7 @@
                 success: function (json) {
                     let data = $.parseJSON(json);
                     if(data) {
-                        {#
-                            window.location = "{{ asset('menu') }}";
-                        #}
+                        window.location = "{{ asset('menu') }}";
                     }else{
                         $('#alert').toast("show");
                     }

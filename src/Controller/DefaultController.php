@@ -13,12 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     /**
-     * @Route("/conexion", name="homepage")
+     * @Route("/connexion", name="homepage")
      */
     public function index()
     {
-        $session = new Session();
-        $session->start();
+        /*$session = new Session();
+        $session->start();*/
 
         return $this->render('menu/connexion.html.twig', [
             'controller_name' => 'DefaultController',
@@ -84,6 +84,19 @@ class DefaultController extends AbstractController
         return $this->render('menu/inscription.html.twig', [
             'controller_name' => 'DefaultController',
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/menu", name="menu")
+     * @param Request $request
+     * @return Response
+     */
+    public function menu(Request $request)
+    {
+
+        return $this->render('menu/index.html.twig', [
+            'controller_name' => 'DefaultController',
         ]);
     }
 }

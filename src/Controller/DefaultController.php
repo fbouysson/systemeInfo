@@ -3,7 +3,12 @@
 namespace App\Controller;
 
 use App\Form\InscriptionType;
+use App\src\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,6 +76,18 @@ class DefaultController extends AbstractController
     public function inscription(Request $request)
     {
         $form = $this->createForm(InscriptionType::class);
+        /*$form = $this->createFormBuilder(User::class);
+        $form->add('id_user',HiddenType::class)
+            ->add('user_nom',TextType::class, array("label"=>"Nom : "))
+            ->add('user_prenom',TextType::class, array("label"=>"Prenom : "))
+            ->add('user_email',TextType::class, array("label"=>"E-Mail : "))
+            ->add('user_date_arrivee',HiddenType::class)
+            ->add('user_role',HiddenType::class)
+            ->add('user_username',TextType::class, array("label" => "Nom d'utilisateur : "))
+            ->add('user_password',PasswordType::class, array("label" => "Mot de passe : "))
+            ->add('submit', SubmitType::class, array("label" => "Rejoindre l'élite !"))
+            ->getForm();*/
+
         $form->handleRequest($request);
 
         $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
@@ -79,6 +96,7 @@ class DefaultController extends AbstractController
             $data = $form->getData();
             $em->persist($data);
             $em->flush();
+            return $this->redirectToRoute('connexion');
         }
 
         return $this->render('menu/inscription.html.twig', [

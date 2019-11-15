@@ -38,8 +38,8 @@ doctrine:
                     SYSI:
                         is_bundle: false
                         type: annotation
-                        dir: '%kernel.project_dir%\src\Entity\SYSI'
-                        prefix: 'App\src\Entity\SYSI'
+                        dir: '%kernel.project_dir%\src\Entity'
+                        prefix: 'App\src\Entity'
                         alias: SYSI
 
             default:
@@ -48,8 +48,8 @@ doctrine:
                     App:
                         is_bundle: false
                         type: annotation
-                        dir: '%kernel.project_dir%\src\Entity\App'
-                        prefix: 'App\Entity\App'
+                        dir: '%kernel.project_dir%\src\Entity'
+                        prefix: 'App\Entity'
                         alias: App
 
             WEB3D_REFERENTIEL:
@@ -58,8 +58,8 @@ doctrine:
                     WEB3D:
                         is_bundle: false
                         type: annotation
-                        dir: '%kernel.project_dir%\src\Entity\WEB3D'
-                        prefix: 'App\Entity\WEB3D'
+                        dir: '%kernel.project_dir%\src\Entity'
+                        prefix: 'App\Entity'
                         alias: WEB3D
 #        auto_generate_proxy_classes: true
 #        naming_strategy: doctrine.orm.naming_strategy.underscore

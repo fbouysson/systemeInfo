@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+{#<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">#}
+<link href="{{asset('css/bootstrap.min.css')}}" id="bootstrap-css">
+
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    {% endblock %}
+    {% block stylesheetssup %}{% endblock %}
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/fox.png') }}"/>
+</head>
+<body>
+<div class="page-wrapper chiller-theme toggled">
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+    <nav id="sidebar" class="sidebar-wrapper">
+        <div class="sidebar-content">
+            <div class="sidebar-brand">
+                <a href="#">Horizon</a>
+                <div id="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-header">
+                <div class="user-pic">
+                    <img class="img-responsive img-rounded" src="{{ asset('img/fox.png') }}" alt="User picture">
+                </div>
+                <div class="user-info">
+          <span class="user-name">Florian
+            <strong>Bouysson</strong>
+          </span>
+                    <span class="user-role">Administrateur</span>
+                    <span class="user-status">
+            <i class="fa fa-circle"></i>
+            <span>Online</span>
+          </span>
+                </div>
+            </div>
+            <!-- sidebar-header  -->
+            <div class="sidebar-search">
+                <div>
+                    <div class="input-group">
+                        <label style="width: 75%; margin-right: 10px">
+                            <input type="text" class="form-control search-menu" placeholder="Rechercher...">
+                        </label>
+                        <span class="input-group-text search" style="height: 39px">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                          </span>
+                        <div class="input-group-append">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- sidebar-search  -->
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="header-menu">
+                        <span>General</span>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            <i class="fa fa-th"></i>
+                            <span>Acceuil</span>
+                            {#                            <span class="badge badge-pill badge-warning">New</span>#}
+                        </a>
+                        {# <div class="sidebar-submenu">
+                             <ul>
+                                 <li>
+                                     <a href="#">Module 1
+                                       <span class="badge badge-pill badge-success">Pro</span>
+                                     </a>
+                                 </li>
+                                 <li>
+                                     <a href="#">Module 2</a>
+                                 </li>
+                                 <li>
+                                     <a href="#">Module 3</a>
+                                 </li>
+                             </ul>
+                         </div>#}
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fas fa-laptop-code"></i>
+                            <span>Chiffrage</span>
+                            {#                            <span class="badge badge-pill badge-danger">3</span>#}
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">César
+
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">Transposé</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fas fa-sliders-h"></i>
+                            <span>Paramètre</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">Utilisateur</a>
+                                </li>
+                                <li>
+                                    <a href="#">Module</a>
+                                </li>
+                                <li>
+                                    <a href="#">Groupe</a>
+                                </li>
+                                <li>
+                                    <a href="#">Icons</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    {#   <li class="sidebar-dropdown">
+                           <a href="#">
+                               <i class="fa fa-chart-line"></i>
+                               <span>Charts</span>
+                           </a>
+                           <div class="sidebar-submenu">
+                               <ul>
+                                   <li>
+                                       <a href="#">Pie chart</a>
+                                   </li>
+                                   <li>
+                                       <a href="#">Line chart</a>
+                                   </li>
+                                   <li>
+                                       <a href="#">Bar chart</a>
+                                   </li>
+                                   <li>
+                                       <a href="#">Histogram</a>
+                                   </li>
+                               </ul>
+                           </div>
+                       </li>
+                       <li class="sidebar-dropdown">
+                           <a href="#">
+                               <i class="fa fa-globe"></i>
+                               <span>Maps</span>
+                           </a>
+                           <div class="sidebar-submenu">
+                               <ul>
+                                   <li>
+                                       <a href="#">Google maps</a>
+                                   </li>
+                                   <li>
+                                       <a href="#">Open street map</a>
+                                   </li>
+                               </ul>
+                           </div>
+                       </li>
+                       <li class="header-menu">
+                           <span>Extra</span>
+                       </li>
+                       <li>
+                           <a href="#">
+                               <i class="fa fa-book"></i>
+                               <span>Documentation</span>
+                               <span class="badge badge-pill badge-primary">Beta</span>
+                           </a>
+                       </li>
+                       <li>
+                           <a href="#">
+                               <i class="fa fa-calendar"></i>
+                               <span>Calendar</span>
+                           </a>
+                       </li>
+                       <li>
+                           <a href="#">
+                               <i class="fa fa-folder"></i>
+                               <span>Examples</span>
+                           </a>
+                       </li>#}
+                </ul>
+            </div>
+            <!-- sidebar-menu  -->
+        </div>
+        <!-- sidebar-content  -->
+        <div class="sidebar-footer">
+            <a href="#">
+                <i class="fa fa-bell"></i>
+                <span class="badge badge-pill badge-warning notification">3</span>
+            </a>
+            <a href="#">
+                <i class="fa fa-envelope"></i>
+                <span class="badge badge-pill badge-success notification">7</span>
+            </a>
+            <a href="#">
+                <i class="fa fa-cog"></i>
+                <span class="badge-sonar"></span>
+            </a>
+            <a href="#">
+                <i class="fa fa-power-off"></i>
+            </a>
+        </div>
+    </nav>
+    <!-- sidebar-wrapper  -->
+    <main class="page-content">
+        <div class="container-fluid">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </main>
+</div>
+</body>
+
+{% block js %}
+   {# <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>#}
+    <script type="text/javascript" src="{{ asset('js/popper.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jQuery.min.js') }}"></script>
+{#    <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>#}
+    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+
+
+    <script>
+        $(document).ready(function ($) {
+
+            $(".sidebar-dropdown > a").click(function () {
+                $(".sidebar-submenu").slideUp(200);
+                if (
+                    $(this)
+                        .parent()
+                        .hasClass("active")
+                ) {
+                    $(".sidebar-dropdown").removeClass("active");
+                    $(this)
+                        .parent()
+                        .removeClass("active");
+                } else {
+                    $(".sidebar-dropdown").removeClass("active");
+                    $(this)
+                        .next(".sidebar-submenu")
+                        .slideDown(200);
+                    $(this)
+                        .parent()
+                        .addClass("active");
+                }
+            });
+
+            $("#close-sidebar").click(function () {
+                $(".page-wrapper").removeClass("toggled");
+            });
+            $("#show-sidebar").click(function () {
+                $(".page-wrapper").addClass("toggled");
+            });
+
+        });
+    </script>
+{% endblock %}
+{% block javascripts %}
+{% endblock %}
+</html>

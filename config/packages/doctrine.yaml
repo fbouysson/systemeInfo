@@ -1,0 +1,69 @@
+doctrine:
+    dbal:
+        default_connection: WEB3D_REFERENTIEL
+        connections:
+            default:
+                url: '%env(resolve:DATABASE_URL)%'
+                # IMPORTANT: You MUST configure your db driver and server version,
+                # either here or in the DATABASE_URL env var (see .env file)
+                driver: 'pdo_mysql'
+                server_version: '5.7'
+            SYSTEME_INFO:
+                url: '%env(resolve:SYSTEME_INFO)%'
+                # IMPORTANT: You MUST configure your db driver and server version,
+                # either here or in the DATABASE_URL env var (see .env file)
+                driver: 'mysql'
+                server_version: '8.0'
+                # Only needed for MySQL (ignored otherwise)
+                charset: utf8mb4
+                default_table_options:
+                    collate: utf8mb4_unicode_ci
+
+            WEB3D_REFERENTIEL:
+                url: '%env(resolve:WEB3D_REFERENTIEL)%'
+                # IMPORTANT: You MUST configure your db driver and server version,
+                # either here or in the DATABASE_URL env var (see .env file)
+                driver: 'mysql'
+                server_version: '8.0'
+                # Only needed for MySQL (ignored otherwise)
+                charset: utf8mb4
+                default_table_options:
+                    collate: utf8mb4_unicode_ci
+    orm:
+        default_entity_manager: SYSTEME_INFO
+        entity_managers:
+            SYSTEME_INFO:
+                connection: SYSTEME_INFO
+                mappings:
+                    SYSI:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%\src\Entity\SYSI'
+                        prefix: 'App\src\Entity\SYSI'
+                        alias: SYSI
+
+            default:
+                connection: default
+                mappings:
+                    App:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%\src\Entity\App'
+                        prefix: 'App\Entity\App'
+                        alias: App
+
+            WEB3D_REFERENTIEL:
+                connection: WEB3D_REFERENTIEL
+                mappings:
+                    WEB3D:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%\src\Entity\WEB3D'
+                        prefix: 'App\Entity\WEB3D'
+                        alias: WEB3D
+#        auto_generate_proxy_classes: true
+#        naming_strategy: doctrine.orm.naming_strategy.underscore
+#        auto_mapping: true
+#        mappings:
+
+

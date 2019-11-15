@@ -1,0 +1,163 @@
+<?php
+
+namespace App\src\Entity\SYSI;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * User
+ *
+ * @ORM\Table(name="user")
+ * @ORM\Entity
+ */
+class User
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id_user", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idUser;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="user_nom", type="string", length=45, nullable=true)
+     */
+    private $userNom;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="user_prenom", type="string", length=45, nullable=true)
+     */
+    private $userPrenom;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="user_email", type="string", length=45, nullable=true)
+     */
+    private $userEmail;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="user_date_arrivee", type="date", nullable=false)
+     */
+    private $userDateArrivee;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user_role", type="string", length=45, nullable=false, options={"default"="USER"})
+     */
+    private $userRole = 'USER';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user_username", type="string", length=45, nullable=false)
+     */
+    private $userUsername;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user_password", type="string", length=45, nullable=false)
+     */
+    private $userPassword;
+
+    public function getIdUser(): ?int
+    {
+        return $this->idUser;
+    }
+
+    public function getUserNom(): ?string
+    {
+        return $this->userNom;
+    }
+
+    public function setUserNom(?string $userNom): self
+    {
+        $this->userNom = $userNom;
+
+        return $this;
+    }
+
+    public function getUserPrenom(): ?string
+    {
+        return $this->userPrenom;
+    }
+
+    public function setUserPrenom(?string $userPrenom): self
+    {
+        $this->userPrenom = $userPrenom;
+
+        return $this;
+    }
+
+    public function getUserEmail(): ?string
+    {
+        return $this->userEmail;
+    }
+
+    public function setUserEmail(?string $userEmail): self
+    {
+        $this->userEmail = $userEmail;
+
+        return $this;
+    }
+
+    public function getUserDateArrivee(): ?\DateTimeInterface
+    {
+        return $this->userDateArrivee;
+    }
+
+    public function setUserDateArrivee(\DateTimeInterface $userDateArrivee): self
+    {
+        $this->userDateArrivee = $userDateArrivee;
+
+        return $this;
+    }
+
+    public function getUserRole(): ?string
+    {
+        return $this->userRole;
+    }
+
+    public function setUserRole(string $userRole): self
+    {
+        $this->userRole = $userRole;
+
+        return $this;
+    }
+
+    public function getUserUsername(): ?string
+    {
+        return $this->userUsername;
+    }
+
+    public function setUserUsername(string $userUsername): self
+    {
+        $this->userUsername = $userUsername;
+
+        return $this;
+    }
+
+    public function getUserPassword(): ?string
+    {
+        return $this->userPassword;
+    }
+
+    public function setUserPassword(string $userPassword): self
+    {
+        $this->userPassword = $userPassword;
+
+        return $this;
+    }
+
+
+}

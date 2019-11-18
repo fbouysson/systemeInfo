@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function Sodium\add;
 
 class InscriptionType extends AbstractType
 {
@@ -22,7 +23,8 @@ class InscriptionType extends AbstractType
             ->add('user_date_arrivee',HiddenType::class)
             ->add('user_role',HiddenType::class)
             ->add('user_username',TextType::class, array("label" => "Nom d'utilisateur : ", "required" => true ,'attr' => array("class"=>"styl")))
-            ->add('user_password',PasswordType::class, array("label" => "Mot de passe : ", "required" => true ,'attr' => array("class"=>"styl")));
+            ->add('user_password',PasswordType::class, array("label" => "Mot de passe : ", "required" => true ,'attr' => array("class"=>"styl")))
+            ->add('submit',SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

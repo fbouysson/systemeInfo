@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Form\InscriptionType;
-use App\src\Entity\User;
+use App\Entity\UserUCO;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -68,6 +68,7 @@ class DefaultController extends AbstractController
      * @Route("/inscription", name="inscription")
      * @param Request $request
      * @return Response
+     * @throws \Exception
      */
     public function inscription(Request $request)
     {
@@ -79,23 +80,23 @@ class DefaultController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            /* $user = new User();
+            $user = new UserUCO();
              $user->setUserNom($data["user_nom"])
                  ->setUserPrenom($data["user_prenom"])
                  ->setUserEmail($data["user_email"])
                  ->setUserUsername($data["user_username"])
                  ->setUserPassword($data["user_password"])
                  ->setUserDateArrivee(new DateTime(date('Y-m-d H:i:s', strtotime('now +1 hour'))))
-                 ->setUserRole("USER");*/
+                 ->setUserRole("USER");
 
             $date = date('Y-m-d H:i:s', strtotime('now +1 hour'));
-            $sql = "INSERT INTO systeme_information.user (user_nom, user_prenom, user_email, user_date_arrivee, user_role, user_username, user_password) values (" . $data['user_nom'] . "," . $data['user_prenom'] . "," . $data['user_email'] . "," . $date . ",'USER'," . $data['user_username'] . "," . $data['user_password'] . ")";
+            //$sql = "INSERT INTO systeme_information.user (user_nom, user_prenom, user_email, user_date_arrivee, user_role, user_username, user_password) values (" . $data['user_nom'] . "," . $data['user_prenom'] . "," . $data['user_email'] . "," . $date . ",'USER'," . $data['user_username'] . "," . $data['user_password'] . ")";
 
-            dump($sql);
+            //dump($sql);
 
-            /*$em->persist($user);
-            $em->flush();*/
-            //return $this->redirectToRoute('connexion');
+            $em->persist($user);
+            $em->flush();
+            return $this->redirectToRoute('connexion');
         }
 
         return $this->render('menu/inscription.html.twig', [

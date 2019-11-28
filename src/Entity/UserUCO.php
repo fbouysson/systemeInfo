@@ -58,18 +58,9 @@ class UserUCO
     private $userRole = 'USER';
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="user_username", type="string", length=45, nullable=false)
+     * @ORM\OneToOne(targetEntity="App\Entity\Login", inversedBy="user")
      */
-    private $userUsername;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="user_password", type="string", length=45, nullable=false)
-     */
-    private $userPassword;
+    //private $login;
 
     public function getIdUser(): ?int
     {
@@ -136,29 +127,16 @@ class UserUCO
         return $this;
     }
 
-    public function getUserUsername(): ?string
+   /* public function getLogin(): ?Login
     {
-        return $this->userUsername;
+        return $this->login;
     }
 
-    public function setUserUsername(string $userUsername): self
+    public function setLogin(?Login $login): self
     {
-        $this->userUsername = $userUsername;
+        $this->login = $login;
 
         return $this;
-    }
-
-    public function getUserPassword(): ?string
-    {
-        return $this->userPassword;
-    }
-
-    public function setUserPassword(string $userPassword): self
-    {
-        $this->userPassword = $userPassword;
-
-        return $this;
-    }
-
+    }*/
 
 }

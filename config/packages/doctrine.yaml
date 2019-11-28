@@ -1,6 +1,6 @@
 doctrine:
     dbal:
-        default_connection: WEB3D_REFERENTIEL
+        default_connection: SYSTEME_INFO
         connections:
             default:
                 url: '%env(resolve:DATABASE_URL)%'
@@ -19,16 +19,6 @@ doctrine:
                 default_table_options:
                     collate: utf8mb4_unicode_ci
 
-            WEB3D_REFERENTIEL:
-                url: '%env(resolve:WEB3D_REFERENTIEL)%'
-                # IMPORTANT: You MUST configure your db driver and server version,
-                # either here or in the DATABASE_URL env var (see .env file)
-                driver: 'mysql'
-                server_version: '8.0'
-                # Only needed for MySQL (ignored otherwise)
-                charset: utf8mb4
-                default_table_options:
-                    collate: utf8mb4_unicode_ci
     orm:
         default_entity_manager: SYSTEME_INFO
         entity_managers:
@@ -52,15 +42,6 @@ doctrine:
                         prefix: 'App\Entity'
                         alias: App
 
-            WEB3D_REFERENTIEL:
-                connection: WEB3D_REFERENTIEL
-                mappings:
-                    WEB3D:
-                        is_bundle: false
-                        type: annotation
-                        dir: '%kernel.project_dir%\src\Entity'
-                        prefix: 'App\Entity'
-                        alias: WEB3D
 #        auto_generate_proxy_classes: true
 #        naming_strategy: doctrine.orm.naming_strategy.underscore
 #        auto_mapping: true

@@ -1,0 +1,62 @@
+{% block title %}<title>UCO : connexion</title>{% endblock %}
+
+<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+<link rel="stylesheet" href="{{ asset('css/all.css') }}">
+<link rel="stylesheet" href="{{ asset('css/base.css') }}">
+<link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/onglet.png') }}"/>
+
+<style>
+    body {
+        background-color: #f4f4f4;
+    }
+</style>
+
+{% block body %}
+    <div class="row" >
+        <div class="col-4 offset-4" style="margin-top: 5%; padding: 10px; text-align: center" >
+            <h1>Ultimate Chat Online</h1>
+        </div>
+        <div class="col-4 offset-4 card"
+             style="background-color: white; border: 1px solid grey; padding: 20px">
+            <form method="post">
+
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="mb-3">
+                        You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                    </div>
+                {% endif %}
+
+                <label for="inputLoginUsername" style="font-weight: bold;">Nom d'utilisateur :</label>
+                <input type="text" value="{{ last_username }}" name="loginUsername" id="inputLoginUsername"
+                       class="form-control" required autofocus>
+                <br>
+                <label for="inputPassword" style="font-weight: bold;">Mot de passe :</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" required>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                {#
+                    Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                    See https://symfony.com/doc/current/security/remember_me.html
+
+                    <div class="checkbox mb-3">
+                        <label>
+                            <input type="checkbox" name="_remember_me"> Remember me
+                        </label>
+                    </div>
+                #}
+                <br>
+                <button class="btn btn-info col-3 offset-3" type="submit"> Connexion </button>
+                <a class="btn btn-light col-3" style="cursor: pointer; border: 1px solid grey" onclick="window.location = '{{ asset('inscription') }}'"> Inscription </a>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+<script type="text/javascript" src="{{ asset('js/popper.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jQuery.min.js') }}"></script>
+{#    <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>#}
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>

@@ -1,8 +1,9 @@
 ############## generate entity ##############
 
 php bin/console doctrine:mapping:import "App\Entity" annotation --path=src/Entity
-php bin/console doctrine:mapping:import "App\src\Entity\WEB3D" annotation --path=src/Entity/WEB3D --em=WEB3D_REFERENTIEL
+php bin/console doctrine:mapping:import "App\Entity\WEB3D" annotation --path=src/Entity/WEB3D --em=WEB3D_REFERENTIEL
+php bin/console doctrine:mapping:import "App\Entity" annotation --path=src/Entity --em=SYSTEME_INFO
 
 ############## generate getter/setter ##############
 php bin/console make:entity --regenerate App
-php bin/console make:entity --regenerate App\src\Entity\WEB3D\User
+php bin/console make:entity --regenerate App\Entity\Login

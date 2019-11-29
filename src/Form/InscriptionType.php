@@ -16,13 +16,11 @@ class InscriptionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('userNom', TextType::class, array("label" => "Nom : ", "attr" => array("class" => "form-control")))
-            ->add('userPrenom',TextType::class, array("label" => "Prénom : ", "attr" => array("class" => "form-control")))
-            ->add('userEmail', EmailType::class, array("label" => "E-mail : ", "attr" => array("class" => "form-control")))
+            ->add('userNom', TextType::class, array("label" => "Nom : ","mapped" => false ,"attr" => array("class" => "form-control")))
+            ->add('userPrenom',TextType::class, array("label" => "Prénom : ","mapped" => false, "attr" => array("class" => "form-control")))
+            ->add('userEmail', EmailType::class, array("label" => "E-mail : ","mapped" => false, "attr" => array("class" => "form-control")))
             ->add('userDateArrivee', HiddenType::class)
-            ->add('userRole', HiddenType::class, array("required" => false))
-            ->add('login', InscriptionLoginType::class, array("label"=>" "))
-            ->add("submit", SubmitType::class, array("label" => "Rejoindre l'élite !", "attr" => array("class" => "btn btn-light btnInscription")))
+            ->add('userRole', HiddenType::class)
         ;
     }
 

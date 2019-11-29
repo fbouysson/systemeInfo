@@ -57,11 +57,6 @@ class UserUCO
      */
     private $userRole = 'USER';
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Login", inversedBy="user")
-     */
-    //private $login;
-
     public function getIdUser(): ?int
     {
         return $this->idUser;
@@ -126,17 +121,5 @@ class UserUCO
 
         return $this;
     }
-
-   /* public function getLogin(): ?Login
-    {
-        return $this->login;
-    }
-
-    public function setLogin(?Login $login): self
-    {
-        $this->login = $login;
-
-        return $this;
-    }*/
 
 }

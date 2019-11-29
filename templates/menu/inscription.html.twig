@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" style="overflow: hidden">
 <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
 <link rel="stylesheet" href="{{ asset('css/bootstrap-grid.css') }}">
 <link rel="stylesheet" href="{{ asset('css/bootstrap-reboot.css') }}">
@@ -28,19 +28,20 @@
             {{ form_start(form, {'attr': {'id': 'formInscription','onsubmit':"check(this)"}}) }}
 
             <div class="col-5" style="display: inline-block; text-align: left">
-                {{ form_row(form.userNom) }}
-                {{ form_row(form.userPrenom) }}
-                {{ form_row(form.userEmail) }}
+                {{ form_row(form.user.userNom) }}
+                {{ form_row(form.user.userPrenom) }}
+                {{ form_row(form.user.userEmail) }}
             </div>
 
             <div class="col-5 offset-1" style="display: inline-block; text-align: left">
-                {{ form_row(form.login.loginUsername) }}
-                {{ form_row(form.login.loginPassword) }}
+                {{ form_row(form.loginUsername) }}
+                {{ form_row(form.plainPassword) }}
                 <label for="comfirmMdp">Comfirmer mot de passe : </label>
                 <input autocomplete="false" type="password" class="form-control" id="comfirmMdp">
             </div>
 
             <div class="col-4 offset-4" style="margin-top: 20px">
+                {{ form_row(form.agreeTerms) }}
                 {{ form_row(form.submit) }}
             </div>
             {{ form_end(form) }}
@@ -48,7 +49,7 @@
     </div>
 
 </body>
-
+</html>
 <script type="text/javascript" src="{{ asset('js/util.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/jQuery.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
@@ -58,12 +59,12 @@
     function check() {
         let form = document.getElementById('formInscription');
 
-        let nom = document.getElementById("inscription_userNom");
-        let prenom = document.getElementById("inscription_userPrenom");
-        let mail = document.getElementById("inscription_userEmail");
+        let nom = document.getElementById("registration_form_user_userNom");
+        let prenom = document.getElementById("registration_form_user_userPrenom");
+        let mail = document.getElementById("registration_form_user_userEmail");
 
-        let username = document.getElementById("inscription_login_loginUsername");
-        let mdp = document.getElementById('inscription_login_loginPassword');
+        let username = document.getElementById("registration_form_loginUsername");
+        let mdp = document.getElementById('registration_form_plainPassword');
         let comfirm = document.getElementById('comfirmMdp');
 
         let erreur = "";

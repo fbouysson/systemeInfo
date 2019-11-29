@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -10,8 +12,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @ORM\Table(name="login")
  * @ORM\Entity
+ * @UniqueEntity(fields={"loginUsername"}, message="There is already an account with this loginUsername")
  */
-class Login implements UserInterface
+class Login extends AbstractController implements UserInterface
 {
     /**
      * @var int
@@ -42,11 +45,6 @@ class Login implements UserInterface
      * @ORM\Column(name="login_password", type="string", length=45, nullable=false)
      */
     private $loginPassword;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\UserUCO", inversedBy="login")
-     */
-    //private $user;
 
     public function getIdLogin(): ?int
     {
@@ -106,7 +104,12 @@ class Login implements UserInterface
      */
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
+        $sql = "select user_role from user where id_user = ".$this->getLoginIdUser();
+        $statement = $em->getConnection()->prepare($sql);
+        $statement->execute();
+
+        return $statement->fetch();
     }
 
     /**
@@ -154,16 +157,4 @@ class Login implements UserInterface
     {
         return null;
     }
-
-    /*public function getUser(): ?UserUCO
-    {
-        return $this->user;
-    }
-
-    public function setUser(?UserUCO $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }*/
 }

@@ -1,9 +1,13 @@
-{% block title %}<title>UCO : connexion</title>{% endblock %}
-
+<!DOCTYPE html>
+<html lang="fr" style="overflow: hidden">
 <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
-<link rel="stylesheet" href="{{ asset('css/all.css') }}">
-<link rel="stylesheet" href="{{ asset('css/base.css') }}">
+<link rel="stylesheet" href="{{ asset('css/bootstrap-grid.css') }}">
+<link rel="stylesheet" href="{{ asset('css/bootstrap-reboot.css') }}">
 <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/onglet.png') }}"/>
+<head>
+    <meta charset="UTF-8"/>
+    <title>UCO : connexion</title>
+</head>
 
 <style>
     body {
@@ -11,7 +15,7 @@
     }
 </style>
 
-{% block body %}
+<body>
     <div class="row" >
         <div class="col-4 offset-4" style="margin-top: 5%; padding: 10px; text-align: center" >
             <h1>Ultimate Chat Online</h1>
@@ -54,7 +58,8 @@
             </form>
         </div>
     </div>
-{% endblock %}
+</body>
+</html>
 
 <script type="text/javascript" src="{{ asset('js/popper.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/jQuery.min.js') }}"></script>

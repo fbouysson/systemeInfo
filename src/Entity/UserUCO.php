@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -44,9 +43,9 @@ class UserUCO
     private $userEmail;
 
     /**
-     * @var DateTime
+     * @var string
      *
-     * @ORM\Column(name="user_date_arrivee", type="date", nullable=false)
+     * @ORM\Column(name="user_date_arrivee", type="string",length=10, nullable=false)
      */
     private $userDateArrivee;
 
@@ -98,12 +97,12 @@ class UserUCO
         return $this;
     }
 
-    public function getUserDateArrivee(): ?\DateTimeInterface
+    public function getUserDateArrivee(): ?string
     {
         return $this->userDateArrivee;
     }
 
-    public function setUserDateArrivee(\DateTimeInterface $userDateArrivee): self
+    public function setUserDateArrivee(string $userDateArrivee): self
     {
         $this->userDateArrivee = $userDateArrivee;
 

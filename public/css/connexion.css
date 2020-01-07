@@ -15,7 +15,7 @@ h1 {
 }
 
 div.main {
-    width: 700px;
+    width: 50%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -30,21 +30,11 @@ div.main div {
 
 label {
     position: absolute;
-    top: 0;
     font-size: 15px;
-    margin: 10px;
     padding: 0 10px;
     background-color: #212529;
-    -webkit-transition: top .2s ease-in-out,  font-size .2s ease-in-out;
-    transition: top .2s ease-in-out,  font-size .2s ease-in-out;
-}
-
-.active {
-    top: -25px;
-    font-size: 15px;
-    font-weight: 900;
-    letter-spacing: 6px;
-    text-transform: uppercase;
+    margin-top: -15px;
+    margin-left: 10px;
 }
 
 input[type=text] {

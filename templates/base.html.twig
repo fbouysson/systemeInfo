@@ -1,21 +1,18 @@
 <!DOCTYPE html>
-{#<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">#}
-<link href="{{asset('css/bootstrap.min.css')}}" id="bootstrap-css">
-
-
 <html lang="fr">
 <head>
     <meta charset="UTF-8"/>
     <title>UCO : {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/all.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     {% endblock %}
-    {% block stylesheetssup %}{% endblock %}
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/onglet.png') }}"/>
 </head>
-<body>
+<body style="visibility: hidden">
+<img id="loader" src="{{ asset('img/Loader.gif') }}" alt="" style="position: absolute; z-index: 1000; width: fit-content;left: 45%;top: 30%; display: none"/>
+
 <div class="page-wrapper chiller-theme toggled">
     <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
         <i class="fas fa-bars"></i>
@@ -23,7 +20,7 @@
     <nav id="sidebar" class="sidebar-wrapper">
         <div class="sidebar-content">
             <div class="sidebar-brand">
-                <a href="#"> UCO </a>
+                <a href="{{ path('menu') }}"> Ultimate Chat Online </a>
                 <div id="close-sidebar">
                     <i class="fas fa-times"></i>
                 </div>
@@ -33,13 +30,13 @@
                     <img class="img-responsive img-rounded" src="{{ asset('img/fox.png') }}" alt="User picture">
                 </div>
                 <div class="user-info">
-          <span class="user-name">Florian
-            <strong>Bouysson</strong>
+          <span class="user-name">{{user.userPrenom}}
+            <strong>{{user.userNom}}</strong>
           </span>
-                    <span class="user-role">Administrateur</span>
+                    <span class="user-role">{{user.userRole}}</span>
                     <span class="user-status">
-            <i class="fa fa-circle"></i>
-            <span>Online</span>
+            <i class="fa fa-circle" style="color: greenyellow"></i>
+            <span style="color: greenyellow">Online</span>
           </span>
                 </div>
             </div>
@@ -90,26 +87,27 @@
                     <li class="sidebar-dropdown">
                         <a href="#">
                             <i class="fas fa-laptop-code"></i>
-                            <span>Chiffrage</span>
+                            <span>Salons</span>
                             {#                            <span class="badge badge-pill badge-danger">3</span>#}
                         </a>
                         <div class="sidebar-submenu">
                             <ul>
                                 <li>
-                                    <a href="#">César
+                                    <a href="#">Salon 1
 
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">Transposé</a>
+                                    <a href="#">Salon 2</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
+                    {% if user.userRole == "Admin" %}
                     <li class="sidebar-dropdown">
                         <a href="#">
                             <i class="fas fa-sliders-h"></i>
-                            <span>Paramètre</span>
+                            <span>Paramètrages</span>
                         </a>
                         <div class="sidebar-submenu">
                             <ul>
@@ -117,17 +115,12 @@
                                     <a href="#">Utilisateur</a>
                                 </li>
                                 <li>
-                                    <a href="#">Module</a>
-                                </li>
-                                <li>
                                     <a href="#">Groupe</a>
-                                </li>
-                                <li>
-                                    <a href="#">Icons</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
+                    {% endif %}
                     {#   <li class="sidebar-dropdown">
                            <a href="#">
                                <i class="fa fa-chart-line"></i>
@@ -206,7 +199,7 @@
                 <i class="fa fa-cog"></i>
                 <span class="badge-sonar"></span>
             </a>
-            <a href="#">
+            <a href="{{ path('connexion') }}">
                 <i class="fa fa-power-off"></i>
             </a>
         </div>
@@ -222,16 +215,13 @@
 </body>
 
 {% block js %}
-   {# <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>#}
+    <script type="text/javascript" src="{{asset('js/all.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/popper.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jQuery.min.js') }}"></script>
-{#    <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>#}
-    <script src="{{asset('js/bootstrap.min.js')}}"></script>
-
-
+    <script type="text/javascript" src="{{asset('js/bootstrap.min.js')}}"></script>
     <script>
         $(document).ready(function ($) {
+            $('body').css("visibility","visible");
 
             $(".sidebar-dropdown > a").click(function () {
                 $(".sidebar-submenu").slideUp(200);
@@ -263,6 +253,14 @@
             });
 
         });
+
+        function showLoader() {
+            document.getElementById("loader").style.display = "block";
+        }
+
+        function hideLoader() {
+            document.getElementById("loader").style.display = "none";
+        }
     </script>
 {% endblock %}
 {% block javascripts %}

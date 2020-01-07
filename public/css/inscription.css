@@ -1,0 +1,90 @@
+* {
+    letter-spacing: 3px;
+    font-family: 'Alegreya Sans SC', sans-serif;
+}
+
+body {
+    color: white;
+    background-color: #212529;
+}
+
+h1 {
+    font-size: 60px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+div.main {
+    width: 65%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    vertical-align: middle;
+}
+
+div.main div {
+    position: relative;
+    margin: 40px 0;
+}
+
+label {
+    position: absolute;
+    font-size: 15px;
+    padding: 0 10px;
+    background-color: #212529;
+    margin-top: -15px;
+    margin-left: 10px;
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 20px;
+    border: 2px solid white;
+    font-size: 15px;
+    font-weight: 800;
+    background-color: #212529;
+    color: white;
+}
+
+input[type=email] {
+    width: 100%;
+    padding: 20px;
+    border: 2px solid white;
+    font-size: 15px;
+    font-weight: 800;
+    background-color: #212529;
+    color: white;
+}
+
+input[type=password] {
+    width: 100%;
+    padding: 20px;
+    border: 2px solid white;
+    font-size: 15px;
+    font-weight: 800;
+    background-color: #212529;
+    color: white;
+}
+
+input[type=text]:focus {
+    outline: none;
+}
+
+input[type=email]:focus {
+    outline: none;
+}
+
+input[type=password]:focus {
+    outline: none;
+}
+
+.main div{
+    display: inline-block;
+}
+
+.main{
+    display: inline-block;
+    text-align: center;
+}

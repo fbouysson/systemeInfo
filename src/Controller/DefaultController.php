@@ -18,8 +18,6 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
-        /*$session = new Session();
-        $session->start();*/
 
         return $this->render('menu/connexion.html.twig', [
             'controller_name' => 'DefaultController',

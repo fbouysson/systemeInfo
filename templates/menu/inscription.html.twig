@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr" style="overflow: hidden">
+<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+<link rel="stylesheet" href="{{ asset('css/bootstrap-grid.css') }}">
+<link rel="stylesheet" href="{{ asset('css/bootstrap-reboot.css') }}">
+<link rel="stylesheet" href="{{ asset('css/inscription.css') }}">
+<link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/onglet.png') }}"/>
+<head>
+    <meta charset="UTF-8"/>
+    <title>UCO : inscription</title>
+</head>
+
+<body>
+<img id="loader" src="{{ asset('img/Loader.gif') }}" alt="" style="position: absolute; z-index: 1000; width: fit-content;left: 45%;top: 30%; display: none"/>
+
+    <div class="main" style="border: 2px solid lightgrey; padding: 10px">
+        <h1>Ultimate Chat Online</h1>
+        <div class="col-5">
+            <label for="nom">Nom</label>
+            <input id="nom" type="text" class="styl"/>
+        </div>
+
+        <div class="col-5 offset-1">
+            <label for="username">Nom d'utilisateur</label>
+            <input id="username" type="text" class="styl"/>
+        </div>
+
+        <div class="col-5">
+            <label for="prenom">Prenom</label>
+            <input id="prenom" type="text" class="styl"/>
+        </div>
+
+        <div class="col-5 offset-1">
+            <label for="mdp">Mot de passe</label>
+            <input id="mdp" type="password" class="styl"/>
+        </div>
+
+        <div class="col-5">
+            <label for="mail">Adresse mail</label>
+            <input id="mail" type="email" class="styl"/>
+        </div>
+
+        <div class="col-5 offset-1">
+            <label for="comfirmMdp">Comfirmer le mot de passe</label>
+            <input id="comfirmMdp" type="password" class="styl"/>
+        </div>
+
+
+    </div>
+    <div style="position: absolute; left: 38%; width: 210px; top: 85%">
+        <button class="btn btn-primary" onclick="check()" style="position: absolute; left: 35%">Rejiondre l'élite !</button>
+    </div>
+
+</body>
+</html>
+<script type="text/javascript" src="{{ asset('js/jQuery.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/bootstrap.bundle.js') }}"></script>
+<script type="text/javascript">
+
+    function showLoader() {
+        document.getElementById("loader").style.display = "block";
+    }
+
+    function hideLoader() {
+        document.getElementById("loader").style.display = "none";
+    }
+
+    function check() {
+        showLoader();
+        let nom = document.getElementById("nom");
+        let prenom = document.getElementById("prenom");
+        let mail = document.getElementById("mail");
+
+        let username = document.getElementById("username");
+        let mdp = document.getElementById('mdp');
+        let comfirm = document.getElementById('comfirmMdp');
+
+        let erreur = "";
+
+        nom.value === "" ? erreur += "Veuillez renseigner un nom. \n\n" : null;
+        prenom.value === "" ? erreur += "Veuillez renseigner un prenom. \n\n" : null;
+        mail.value === "" ? erreur += "Veuillez renseigner un e-mail. \n\n" : null;
+        username.value === "" ? erreur += "Veuillez renseigner un nom d'utilisateur. \n\n" : null;
+        mdp.value === "" ? erreur += "Veuillez renseigner un mot de pass. \n\n" : null;
+        comfirm.value === "" ? erreur += "Veuillez comfirmer votre mot de passe. \n\n" : null;
+
+        if (erreur === "") {
+            if (mdp.value === comfirm.value) {
+                let Route = '{{ path('inscription_validation') }}';
+                $.ajax({
+                    url: Route,
+                    type: 'POST',
+                    data: "username=" + username.value +
+                        "&mail=" + mail.value +
+                        "&nom=" + nom.value +
+                        "&prenom=" + prenom.value +
+                        "&mdp=" + mdp.value,
+                    dataType: 'json',
+
+                    success: function (json) {
+                        hideLoader();
+                        if(json === "ok"){
+                            alert("Inscription effectué !\nVous allez être redirigé vers la page de connexion !");
+                            window.location = '{{ path('connexion') }}';
+                        }else{
+                            alert(json);
+                        }
+                    }
+                });
+            } else {
+                hideLoader();
+                alert( "Les mots de passe ne sont pas les même !");
+                return false;
+            }
+        } else {
+            hideLoader();
+            alert(erreur);
+            return false;
+        }
+        return true;
+    }
+</script>

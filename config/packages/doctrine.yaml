@@ -1,9 +1,15 @@
 doctrine:
     dbal:
-        default_connection: FOO3D
+        default_connection: SYSTEME_INFO
         connections:
-            FOO3D:
-                url: '%env(resolve:FOO3D)%'
+            default:
+                url: '%env(resolve:DATABASE_URL)%'
+                # IMPORTANT: You MUST configure your db driver and server version,
+                # either here or in the DATABASE_URL env var (see .env file)
+                driver: 'pdo_mysql'
+                server_version: '5.7'
+            SYSTEME_INFO:
+                url: '%env(resolve:SYSTEME_INFO)%'
                 # IMPORTANT: You MUST configure your db driver and server version,
                 # either here or in the DATABASE_URL env var (see .env file)
                 driver: 'mysql'
@@ -14,17 +20,17 @@ doctrine:
                     collate: utf8mb4_unicode_ci
 
     orm:
-        default_entity_manager: FOO3D
+        default_entity_manager: SYSTEME_INFO
         entity_managers:
-            FOO3D:
-                connection: FOO3D
+            SYSTEME_INFO:
+                connection: SYSTEME_INFO
                 mappings:
                     SYSI:
                         is_bundle: false
                         type: annotation
-                        dir: '%kernel.project_dir%\src\Entity\FOO3D'
-                        prefix: 'App\Entity\FOO3D'
-                        alias: FOO3D
+                        dir: '%kernel.project_dir%\src\Entity'
+                        prefix: 'App\Entity'
+                        alias: SYSI
 
             default:
                 connection: default
@@ -32,8 +38,8 @@ doctrine:
                     App:
                         is_bundle: false
                         type: annotation
-                        dir: '%kernel.project_dir%\src\Entity\FOO3D'
-                        prefix: 'App\Entity\FOO3D'
+                        dir: '%kernel.project_dir%\src\Entity'
+                        prefix: 'App\Entity'
                         alias: App
 
 #        auto_generate_proxy_classes: true

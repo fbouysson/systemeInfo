@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+<link rel="stylesheet" href="{{ asset('css/bootstrap-grid.css') }}">
+<link rel="stylesheet" href="{{ asset('css/bootstrap-reboot.css') }}">
+<link rel="stylesheet" href="{{ asset('css/connexion.css') }}">
+<link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/onglet.png') }}" />
+<head>
+    <meta charset="UTF-8"/>
+    <title>UCO : connexion</title>
+</head>
+<img id="loader" src="{{ asset('img/Loader.gif') }}" alt="" style="position: absolute; z-index: 1000; width: fit-content;left: 45%;top: 30%; display: none"/>
+<div class="main" style="border: 2px solid lightgrey; padding: 20px; display: inline-block">
+    <h1>Ultimate Chat Online</h1>
+
+    <div>
+        <label for="username">Nom d'utilisateur</label>
+        <input id="username" type="text" class="styl"/>
+    </div>
+
+    <div>
+        <label for="mdp">Mot de passe</label>
+        <input id="mdp" type="password" class="styl"/>
+    </div>
+
+    <div style="margin-bottom: 10px">
+        <button class="btn btn-primary" onclick="connexion()" style="position: absolute; left: 28%">Connexion</button>
+        <button class="btn btn-light" onclick="window.location = '{{ asset('inscription') }}'" style="position: absolute; right: 28%">Inscription</button>
+    </div>
+</div>
+
+</body>
+
+    <script type="text/javascript" src="{{asset('js/util.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jQuery.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/bootstrap.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/bootstrap.bundle.js')}}"></script>
+    <script type="text/javascript">
+
+        function showLoader() {
+            document.getElementById("loader").style.display = "block";
+        }
+
+        function hideLoader() {
+            document.getElementById("loader").style.display = "none";
+        }
+
+        function connexion() {
+            showLoader();
+            let username = document.getElementById("username");
+            let mdp = document.getElementById("mdp");
+
+            let Route = '{{ path('connexionValidation') }}';
+            $.ajax({
+                url : Route,
+                type : 'POST',
+                data : "username=" + username.value +
+                        "&mdp=" + mdp.value,
+                dataType : 'json',
+                success: function (json) {
+                    hideLoader();
+                    if(json === "ok") {
+                        window.location = "{{ path('menu') }}";
+                    }else{
+                        alert(json);
+                    }
+                }
+            });
+        }
+    </script>
+</html>

@@ -5,18 +5,17 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultController extends AbstractController
+class MenuController extends AbstractController
 {
     /**
-     * @Route("/", name="menu")
+     * @Route("/menu", name="menu")
      */
     public function index()
     {
-        /*$session = new Session();
-        $session->start();*/
-
+        $user = $_SESSION["user_data"];
         return $this->render('menu/index.html.twig', [
-            'controller_name' => 'DefaultController',
+            'controller_name' => 'MenuController',
+            'user' => $user,
         ]);
     }
 }

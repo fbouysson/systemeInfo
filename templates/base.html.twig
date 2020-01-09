@@ -20,7 +20,7 @@
     <nav id="sidebar" class="sidebar-wrapper">
         <div class="sidebar-content">
             <div class="sidebar-brand">
-                <a href="{{ path('menu') }}"> Ultimate Chat Online </a>
+                {#<a href="{{ path('menu') }}"> Ultimate Chat Online </a>#}
                 <div id="close-sidebar">
                     <i class="fas fa-times"></i>
                 </div>
@@ -30,10 +30,10 @@
                     <img class="img-responsive img-rounded" src="{{ asset('img/fox.png') }}" alt="User picture">
                 </div>
                 <div class="user-info">
-          <span class="user-name">{{user.userPrenom}}
-            <strong>{{user.userNom}}</strong>
+          <span class="user-name">{#{user.userPrenom}#}
+            <strong>{#{user.userNom}#}</strong>
           </span>
-                    <span class="user-role">{{user.userRole}}</span>
+                    <span class="user-role">{#{user.userRole}#}</span>
                     <span class="user-status">
             <i class="fa fa-circle" style="color: greenyellow"></i>
             <span style="color: greenyellow">Online</span>
@@ -103,84 +103,6 @@
                             </ul>
                         </div>
                     </li>
-                    {% if user.userRole == "Admin" %}
-                    <li class="sidebar-dropdown">
-                        <a href="#">
-                            <i class="fas fa-sliders-h"></i>
-                            <span>Paramètrages</span>
-                        </a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li>
-                                    <a href="#">Utilisateur</a>
-                                </li>
-                                <li>
-                                    <a href="#">Groupe</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    {% endif %}
-                    {#   <li class="sidebar-dropdown">
-                           <a href="#">
-                               <i class="fa fa-chart-line"></i>
-                               <span>Charts</span>
-                           </a>
-                           <div class="sidebar-submenu">
-                               <ul>
-                                   <li>
-                                       <a href="#">Pie chart</a>
-                                   </li>
-                                   <li>
-                                       <a href="#">Line chart</a>
-                                   </li>
-                                   <li>
-                                       <a href="#">Bar chart</a>
-                                   </li>
-                                   <li>
-                                       <a href="#">Histogram</a>
-                                   </li>
-                               </ul>
-                           </div>
-                       </li>
-                       <li class="sidebar-dropdown">
-                           <a href="#">
-                               <i class="fa fa-globe"></i>
-                               <span>Maps</span>
-                           </a>
-                           <div class="sidebar-submenu">
-                               <ul>
-                                   <li>
-                                       <a href="#">Google maps</a>
-                                   </li>
-                                   <li>
-                                       <a href="#">Open street map</a>
-                                   </li>
-                               </ul>
-                           </div>
-                       </li>
-                       <li class="header-menu">
-                           <span>Extra</span>
-                       </li>
-                       <li>
-                           <a href="#">
-                               <i class="fa fa-book"></i>
-                               <span>Documentation</span>
-                               <span class="badge badge-pill badge-primary">Beta</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="#">
-                               <i class="fa fa-calendar"></i>
-                               <span>Calendar</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="#">
-                               <i class="fa fa-folder"></i>
-                               <span>Examples</span>
-                           </a>
-                       </li>#}
                 </ul>
             </div>
             <!-- sidebar-menu  -->
@@ -199,9 +121,9 @@
                 <i class="fa fa-cog"></i>
                 <span class="badge-sonar"></span>
             </a>
-            <a href="{{ path('connexion') }}">
+            {#<a href="{{ path('connexion') }}">
                 <i class="fa fa-power-off"></i>
-            </a>
+            </a>#}
         </div>
     </nav>
     <!-- sidebar-wrapper  -->
@@ -220,47 +142,7 @@
     <script type="text/javascript" src="{{ asset('js/jQuery.min.js') }}"></script>
     <script type="text/javascript" src="{{asset('js/bootstrap.min.js')}}"></script>
     <script>
-        $(document).ready(function ($) {
-            $('body').css("visibility","visible");
 
-            $(".sidebar-dropdown > a").click(function () {
-                $(".sidebar-submenu").slideUp(200);
-                if (
-                    $(this)
-                        .parent()
-                        .hasClass("active")
-                ) {
-                    $(".sidebar-dropdown").removeClass("active");
-                    $(this)
-                        .parent()
-                        .removeClass("active");
-                } else {
-                    $(".sidebar-dropdown").removeClass("active");
-                    $(this)
-                        .next(".sidebar-submenu")
-                        .slideDown(200);
-                    $(this)
-                        .parent()
-                        .addClass("active");
-                }
-            });
-
-            $("#close-sidebar").click(function () {
-                $(".page-wrapper").removeClass("toggled");
-            });
-            $("#show-sidebar").click(function () {
-                $(".page-wrapper").addClass("toggled");
-            });
-
-        });
-
-        function showLoader() {
-            document.getElementById("loader").style.display = "block";
-        }
-
-        function hideLoader() {
-            document.getElementById("loader").style.display = "none";
-        }
     </script>
 {% endblock %}
 {% block javascripts %}

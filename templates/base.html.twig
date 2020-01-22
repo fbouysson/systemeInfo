@@ -92,14 +92,9 @@
                         </a>
                         <div class="sidebar-submenu">
                             <ul>
-                                <li>
-                                    <a href="#">Salon 1
-
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">Salon 2</a>
-                                </li>
+                                {% for salon in salons %}
+                                    <li onclick="window.location = '{{ path('salon',{ id : salon.idSalon}) }}'" style="color: white; cursor: pointer">{{ salon.nameSalon }}</li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </li>
@@ -121,68 +116,9 @@
                         </div>
                     </li>
                     {% endif %}
-                    {#   <li class="sidebar-dropdown">
-                           <a href="#">
-                               <i class="fa fa-chart-line"></i>
-                               <span>Charts</span>
-                           </a>
-                           <div class="sidebar-submenu">
-                               <ul>
-                                   <li>
-                                       <a href="#">Pie chart</a>
-                                   </li>
-                                   <li>
-                                       <a href="#">Line chart</a>
-                                   </li>
-                                   <li>
-                                       <a href="#">Bar chart</a>
-                                   </li>
-                                   <li>
-                                       <a href="#">Histogram</a>
-                                   </li>
-                               </ul>
-                           </div>
-                       </li>
-                       <li class="sidebar-dropdown">
-                           <a href="#">
-                               <i class="fa fa-globe"></i>
-                               <span>Maps</span>
-                           </a>
-                           <div class="sidebar-submenu">
-                               <ul>
-                                   <li>
-                                       <a href="#">Google maps</a>
-                                   </li>
-                                   <li>
-                                       <a href="#">Open street map</a>
-                                   </li>
-                               </ul>
-                           </div>
-                       </li>
-                       <li class="header-menu">
-                           <span>Extra</span>
-                       </li>
-                       <li>
-                           <a href="#">
-                               <i class="fa fa-book"></i>
-                               <span>Documentation</span>
-                               <span class="badge badge-pill badge-primary">Beta</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="#">
-                               <i class="fa fa-calendar"></i>
-                               <span>Calendar</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="#">
-                               <i class="fa fa-folder"></i>
-                               <span>Examples</span>
-                           </a>
-                       </li>#}
                 </ul>
             </div>
+            <div class="fa-divide"></div>
             <!-- sidebar-menu  -->
         </div>
         <!-- sidebar-content  -->

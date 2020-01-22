@@ -3,43 +3,38 @@
 <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
 <link rel="stylesheet" href="{{ asset('css/bootstrap-grid.css') }}">
 <link rel="stylesheet" href="{{ asset('css/bootstrap-reboot.css') }}">
+<link rel="stylesheet" href="{{ asset('css/connexion.css') }}">
 <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/onglet.png') }}"/>
 <head>
     <meta charset="UTF-8"/>
     <title>UCO : connexion</title>
 </head>
 
-<style>
-    body {
-        background-color: #f4f4f4;
-    }
-</style>
-
 <body>
     <div class="row" >
         <div class="col-4 offset-4" style="margin-top: 5%; padding: 10px; text-align: center" >
             <h1>Ultimate Chat Online</h1>
         </div>
-        <div class="col-4 offset-4 card"
-             style="background-color: white; border: 1px solid grey; padding: 20px">
-            <form method="post">
+        <img id="loader" src="{{ asset('img/Loader.gif') }}" alt="" style="position: absolute; z-index: 1000; width: fit-content;left: 45%;top: 30%; display: none"/>
+        <div class="main" style="border: 2px solid lightgrey; padding: 20px; display: inline-block">
+            <form method="post" onsubmit="showLoader()">
 
-                {% if error %}
+                {#{% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
+                {% endif %}#}
 
-                {% if app.user %}
+                {#{% if app.user %}
                     <div class="mb-3">
                         You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
                     </div>
-                {% endif %}
+                {% endif %}#}
 
                 <label for="inputLoginUsername" style="font-weight: bold;">Nom d'utilisateur :</label>
                 <input type="text" value="{{ last_username }}" name="loginUsername" id="inputLoginUsername"
-                       class="form-control" required autofocus>
+                       class="form-control styl" required autofocus>
                 <br>
                 <label for="inputPassword" style="font-weight: bold;">Mot de passe :</label>
-                <input type="password" name="password" id="inputPassword" class="form-control" required>
+                <input type="password" name="password" id="inputPassword" class="form-control styl" required>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                 {#
@@ -53,8 +48,8 @@
                     </div>
                 #}
                 <br>
-                <button class="btn btn-info col-3 offset-3" type="submit"> Connexion </button>
-                <a class="btn btn-light col-3" style="cursor: pointer; border: 1px solid grey" onclick="window.location = '{{ asset('inscription') }}'"> Inscription </a>
+                <button class="btn btn-outline-info col-3 offset-3" type="submit" > Connexion </button>
+                <button type="button" class="btn btn-outline-light" onclick="window.location = '{{ path('app_register') }}'">Inscription</button>
             </form>
         </div>
     </div>
@@ -63,5 +58,18 @@
 
 <script type="text/javascript" src="{{ asset('js/popper.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/jQuery.min.js') }}"></script>
-{#    <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>#}
+<script type="text/javascript" src="{{asset('js/util.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/jQuery.min.js')}}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{asset('js/bootstrap.bundle.js')}}"></script>
+
+<script type="text/javascript">
+    function showLoader() {
+        document.getElementById("loader").style.display = "block";
+    }
+
+    function hideLoader() {
+        document.getElementById("loader").style.display = "none";
+    }
+
+</script>

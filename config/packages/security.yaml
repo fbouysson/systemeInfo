@@ -1,7 +1,13 @@
 security:
+    encoders:
+        App\Entity\UserUCO:
+            algorithm: auto
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory: { memory: null }
+        app_user_provider:
+            entity:
+                class: App\Entity\UserUCO
+                property: username
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -14,7 +20,7 @@ security:
             logout:
                 path: app_logout
                 # where to redirect after logout
-                # target: app_any_route
+                target: app_login
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -29,3 +35,6 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/inscription, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/menu, roles: IS_AUTHENTICATED }
+        - { path: ^/salon, roles: IS_AUTHENTICATED }
+        - { path: ^/sendmsg, roles: IS_AUTHENTICATED }

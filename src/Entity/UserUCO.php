@@ -2,24 +2,26 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
  *
- * @ORM\Table(name="user")
- * @ORM\Entity
+ * @ORM\Table(name="UserUCO")
+ * @ORM\Entity(repositoryClass="App\Repository\UserUCORepository")
+ * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
-class UserUCO
+class UserUCO implements UserInterface
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_user", type="integer", nullable=false)
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id_user", type="integer", nullable=false)
      */
-    private $idUser;
+    private $id;
 
     /**
      * @var string|null
@@ -36,29 +38,112 @@ class UserUCO
     private $userPrenom;
 
     /**
+     * @ORM\Column(name="login_username", type="string", length=180, nullable=false, unique=true)
+     */
+    private $username;
+
+    /**
      * @var string|null
      *
-     * @ORM\Column(name="user_email", type="string", length=45, nullable=true)
+     * @ORM\Column(name="user_email", type="string", length=45, nullable=true, unique=true)
      */
     private $userEmail;
 
     /**
-     * @var string
+     * @var DateTime
      *
-     * @ORM\Column(name="user_date_arrivee", type="string",length=10, nullable=false)
+     * @ORM\Column(name="user_date_arrivee", type="Datetime",length=10, nullable=true)
      */
+
     private $userDateArrivee;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="user_role", type="string", length=45, nullable=false, options={"default"="USER"})
+     * @ORM\Column(type="json")
      */
-    private $userRole = 'USER';
+    private $roles = [];
 
-    public function getIdUser(): ?int
+    public function __construct()
     {
-        return $this->idUser;
+        $this->setUserDateArrivee(new DateTime());
+        $this->setRoles(['USER']);
+    }
+    /**
+     * @var string The hashed password
+     * @ORM\Column(name="login_password", type="string",type="string", nullable=false)
+     */
+    private $password;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getUserNom(): ?string
@@ -97,28 +182,15 @@ class UserUCO
         return $this;
     }
 
-    public function getUserDateArrivee(): ?string
+    public function getUserDateArrivee(): ?DateTime
     {
         return $this->userDateArrivee;
     }
 
-    public function setUserDateArrivee(string $userDateArrivee): self
+    public function setUserDateArrivee(DateTime $userDateArrivee): self
     {
         $this->userDateArrivee = $userDateArrivee;
 
         return $this;
     }
-
-    public function getUserRole(): ?string
-    {
-        return $this->userRole;
-    }
-
-    public function setUserRole(string $userRole): self
-    {
-        $this->userRole = $userRole;
-
-        return $this;
-    }
-
 }

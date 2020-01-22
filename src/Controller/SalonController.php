@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Login;
 use App\Entity\Messages;
+use App\Entity\UserUCO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,14 +22,14 @@ class SalonController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
 
-        $user = $_SESSION["user_data"];
-        $username = $em->getRepository(Login::class)->findOneBy(["loginIdUser" => $user->getIdUser()])->getLoginUsername();
+        $user = $this->getUser();
+        $username = $em->getRepository(UserUCO::class)->findOneBy(["loginIdUser" => $user->getId()])->getLoginUsername();
         $messages = $em->getRepository(Messages::class)->findBy(["idSalon" => $id],array("idMessages" => "asc"));
 
         return $this->render('salon/index.html.twig', [
             'controller_name' => 'SalonController',
             'user' => $user,
-            'id' => $user->getIdUser(),
+            'id' => $user->getId(),
             'username' => $username,
             'messages' => $messages,
         ]);
@@ -41,15 +42,15 @@ class SalonController extends AbstractController
      */
     public function sendMsg(Request $request)
     {
-        $user = $_SESSION["user_data"];
+        $user = $this->getUser();
         $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
 
         $msg = $request->get("msg");
-        $username = $em->getRepository(Login::class)->findOneBy(["loginIdUser" => $user->getIdUser()])->getLoginUsername();
+        $username = $em->getRepository(UserUCO::class)->findOneBy(["loginIdUser" => $user->getId()])->getLoginUsername();
 
         $message = new Messages();
         $message->setIdSalon(1)
-            ->setIdUser($user->getIdUser())
+            ->setIdUser($user->getId())
             ->setMessage($msg)
             ->setUsername($username);
 

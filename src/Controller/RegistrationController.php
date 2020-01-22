@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Login;
+use App\Entity\UserUCO;
 use App\Form\RegistrationFormType;
 use App\Security\UCOAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,16 +16,21 @@ class RegistrationController extends AbstractController
 {
     /**
      * @Route("/register", name="app_register")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param GuardAuthenticatorHandler $guardHandler
+     * @param UCOAuthenticator $authenticator
+     * @return Response
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UCOAuthenticator $authenticator): Response
     {
-        $user = new Login();
+        $user = new UserUCO();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-            $user->setLoginPassword(
+            $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
                     $form->get('plainPassword')->getData()

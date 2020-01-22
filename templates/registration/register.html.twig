@@ -1,15 +1,60 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="fr" style="overflow: hidden">
+<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+<link rel="stylesheet" href="{{ asset('css/bootstrap-grid.css') }}">
+<link rel="stylesheet" href="{{ asset('css/bootstrap-reboot.css') }}">
+<link rel="stylesheet" href="{{ asset('css/inscription.css') }}">
+<link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/onglet.png') }}"/>
+<style>
+    .divForm div{
+        padding: 0 !important;
+        margin: 10px 0 !important;
+    }
 
-{% block title %}Register{% endblock %}
+    .divInnerForm{
+        margin: 0!important;
+    }
 
-{% block body %}
-    <h1>Register</h1>
+    .divInnerForm div{
+        width: 100%;
+    }
+
+    .checkboxInput{
+
+    }
+
+</style>
+<head>
+    <meta charset="UTF-8"/>
+    <title>UCO : inscription</title>
+</head>
+<body>
+<img id="loader" src="{{ asset('img/Loader.gif') }}" alt="" style="position: absolute; z-index: 1000; width: fit-content;left: 45%;top: 30%; display: none"/>
 
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.loginUsername) }}
-        {{ form_row(registrationForm.plainPassword) }}
-        {{ form_row(registrationForm.agreeTerms) }}
 
-        <button class="btn">Register</button>
+<div class="main row" style="border: 2px solid lightgrey; padding: 10px">
+    <h1>Ultimate Chat Online</h1>
+    <div style="display: inline-block" class="col-12 divForm">
+        <div class="col-10 divInnerForm">
+            {{ form_row(registrationForm.username) }}
+        </div>
+        <div class="col-10 divInnerForm">
+            {{ form_row(registrationForm.plainPassword) }}
+        </div>
+        <div class="col-8 divInnerForm text-center">
+            {{ form_row(registrationForm.agreeTerms) }}
+        </div>
+<br>
+        <button class="btn btn-outline-info">S'inscrire !</button>
+    </div>
+
     {{ form_end(registrationForm) }}
-{% endblock %}
+</div>
+</body>
+<script type="text/javascript" src="{{ asset('js/jQuery.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/bootstrap.bundle.js') }}"></script>
+<script type="text/javascript">
+
+</script>

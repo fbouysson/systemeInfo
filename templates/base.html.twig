@@ -33,7 +33,7 @@
           <span class="user-name">{{user.userPrenom}}
             <strong>{{user.userNom}}</strong>
           </span>
-                    <span class="user-role">{{user.userRole}}</span>
+                    <span class="user-role">{#{{user.role}}#}</span>
                     <span class="user-status">
             <i class="fa fa-circle" style="color: greenyellow"></i>
             <span style="color: greenyellow">Online</span>
@@ -98,7 +98,7 @@
                             </ul>
                         </div>
                     </li>
-                    {% if user.userRole == "Admin" %}
+                    {#{% if user.role == "Admin" %}
                     <li class="sidebar-dropdown">
                         <a href="#">
                             <i class="fas fa-sliders-h"></i>
@@ -115,7 +115,7 @@
                             </ul>
                         </div>
                     </li>
-                    {% endif %}
+                    {% endif %}#}
                 </ul>
             </div>
             <div class="fa-divide"></div>
@@ -135,7 +135,7 @@
                 <i class="fa fa-cog"></i>
                 <span class="badge-sonar"></span>
             </a>
-            <a href="{{ path('connexion') }}">
+            <a href="{{ path('app_login') }}">
                 <i class="fa fa-power-off"></i>
             </a>
         </div>
@@ -155,6 +155,7 @@
     <script type="text/javascript" src="{{ asset('js/popper.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jQuery.min.js') }}"></script>
     <script type="text/javascript" src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/vue.js')}}"></script>
     <script>
         $(document).ready(function ($) {
             $('body').css("visibility","visible");

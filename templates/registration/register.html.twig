@@ -6,46 +6,60 @@
 <link rel="stylesheet" href="{{ asset('css/inscription.css') }}">
 <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/onglet.png') }}"/>
 <style>
-    .divForm div{
+    .divForm div {
         padding: 0 !important;
-        margin: 10px 0 !important;
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
     }
 
-    .divInnerForm{
-        margin: 0!important;
+    .divInnerForm {
+        margin: 0 !important;
     }
 
-    .divInnerForm div{
+    .divInnerForm div {
         width: 100%;
     }
 
+    .agreeInput div label {
+        margin-top: 0 !important;
+    }
+
+    .agreeInput {
+        margin-left: -260px !important;
+    }
 </style>
 <head>
     <meta charset="UTF-8"/>
     <title>UCO : inscription</title>
 </head>
 <body>
-<img id="loader" src="{{ asset('img/Loader.gif') }}" alt="" style="position: absolute; z-index: 1000; width: fit-content;left: 45%;top: 30%; display: none"/>
+<img id="loader" src="{{ asset('img/Loader.gif') }}" alt=""
+     style="position: absolute; z-index: 1000; width: fit-content;left: 45%;top: 30%; display: none"/>
 
-    {{ form_start(registrationForm) }}
 
 <div class="main row" style="border: 2px solid lightgrey; padding: 10px">
     <h1>Ultimate Chat Online</h1>
     <div style="display: inline-block" class="col-12 divForm">
+        {{ form_start(registrationForm, {'attr':{'onsubmit': 'return validatePassword()'}}) }}
         <div class="col-10 divInnerForm">
             {{ form_row(registrationForm.username) }}
         </div>
         <div class="col-10 divInnerForm">
             {{ form_row(registrationForm.plainPassword) }}
         </div>
-        <div class="col-8 divInnerForm text-center">
+        <div class="col-10">
+            <label for="comfirmMdp">Comfirmer le mot de passe</label>
+            <input id="comfirmMdp" type="password" class="styl"/>
+        </div>
+        <div class="col-8 divInnerForm agreeInput text-center">
             {{ form_row(registrationForm.agreeTerms) }}
         </div>
-<br>
+
+        <br>
         <button class="btn btn-outline-info">S'inscrire !</button>
+        {{ form_end(registrationForm) }}
     </div>
 
-    {{ form_end(registrationForm) }}
 </div>
 </body>
 <script type="text/javascript" src="{{ asset('js/jQuery.min.js') }}"></script>
@@ -53,4 +67,26 @@
 <script type="text/javascript" src="{{ asset('js/bootstrap.bundle.js') }}"></script>
 <script type="text/javascript">
 
+
+    let password = document.getElementById("registration_form_plainPassword");
+    let confirm_password = document.getElementById("comfirmMdp");
+
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+
+    function validatePassword() {
+        if (password.value.length < 6) {
+            password.setCustomValidity("Le mot de passe doit faire 6 caractères minimum");
+            return false
+        } else {
+            password.setCustomValidity('');
+            if (password.value !== confirm_password.value) {
+                confirm_password.setCustomValidity("Les mots de passe ne corresponde pas");
+                return false;
+            } else {
+                confirm_password.setCustomValidity('');
+                return true;
+            }
+        }
+    }
 </script>

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,12 +33,17 @@ class AffectationSalon
     private $idUser;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
-     * @ORM\Column(name="dateArrivÃ©e", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="dateArrivee", type="datetime", nullable=false})
      */
-    private $datearrivã©e = 'CURRENT_TIMESTAMP';
+    private $datearrivee;
 
+    public function __construct()
+    {
+        $this->setDatearrivee (new DateTime());
+    }
+    
     public function getIdSalon(): ?int
     {
         return $this->idSalon;
@@ -47,14 +54,14 @@ class AffectationSalon
         return $this->idUser;
     }
 
-    public function getDatearrivã©e(): ?\DateTimeInterface
+    public function getDatearrivee(): ?DateTimeInterface
     {
-        return $this->datearrivã©e;
+        return $this->datearrivee;
     }
 
-    public function setDatearrivã©e(\DateTimeInterface $datearrivã©e): self
+    public function setDatearrivee(DateTimeInterface $datearrivee): self
     {
-        $this->datearrivã©e = $datearrivã©e;
+        $this->datearrivee = $datearrivee;
 
         return $this;
     }

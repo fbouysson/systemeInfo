@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\UserUCO;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,6 +19,11 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add("userNom", HiddenType::class, ["mapped" => false])
+            ->add("userPrenom",HiddenType::class, ["mapped" => false])
+            ->add("userDateArrivee", HiddenType::class, ["mapped" => false])
+            ->add("userEmail", HiddenType::class, ["mapped" => false])
+            ->add("roles", HiddenType::class, ["mapped" => false])
             ->add('username', TextType::class, ["label" => "Nom d'utilisateur : "])
             ->add('agreeTerms', CheckboxType::class, [
                 "label" => "Conditions d'utilisations",

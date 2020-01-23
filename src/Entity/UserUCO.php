@@ -52,21 +52,21 @@ class UserUCO implements UserInterface
     /**
      * @var DateTime
      *
-     * @ORM\Column(name="user_date_arrivee", type="Datetime",length=10, nullable=true)
+     * @ORM\Column(name="user_date_arrivee", type="datetime",length=10, nullable=false)
      */
 
     private $userDateArrivee;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(name="roles" ,type="json")
      */
     private $roles = [];
 
     public function __construct()
     {
         $this->setUserDateArrivee(new DateTime());
-        $this->setRoles(['USER']);
     }
+
     /**
      * @var string The hashed password
      * @ORM\Column(name="login_password", type="string",type="string", nullable=false)

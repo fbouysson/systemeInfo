@@ -35,6 +35,6 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/inscription, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/menu, roles: IS_AUTHENTICATED }
-        - { path: ^/salon, roles: IS_AUTHENTICATED }
-        - { path: ^/sendmsg, roles: IS_AUTHENTICATED }
+        - { path: ^/menu, roles: ROLE_USER }
+        - { path: ^/salon, roles: ROLE_USER }
+        - { path: ^/sendmsg, roles: ROLE_USER }

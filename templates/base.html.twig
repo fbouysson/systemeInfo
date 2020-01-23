@@ -30,8 +30,8 @@
                     <img class="img-responsive img-rounded" src="{{ asset('img/fox.png') }}" alt="User picture">
                 </div>
                 <div class="user-info">
-          <span class="user-name">{{user.userPrenom}}
-            <strong>{{user.userNom}}</strong>
+          <span class="user-name">
+            <strong>{{user.username}}</strong>
           </span>
                     <span class="user-role">{#{{user.role}}#}</span>
                     <span class="user-status">
@@ -90,6 +90,8 @@
                             <span>Salons</span>
                             {#                            <span class="badge badge-pill badge-danger">3</span>#}
                         </a>
+                        {% if salons is defined %}
+
                         <div class="sidebar-submenu">
                             <ul>
                                 {% for salon in salons %}
@@ -97,8 +99,10 @@
                                 {% endfor %}
                             </ul>
                         </div>
+                        {% endif %}
+
                     </li>
-                    {#{% if user.role == "Admin" %}
+                    {% if user.id == 4 %}
                     <li class="sidebar-dropdown">
                         <a href="#">
                             <i class="fas fa-sliders-h"></i>
@@ -115,7 +119,7 @@
                             </ul>
                         </div>
                     </li>
-                    {% endif %}#}
+                    {% endif %}
                 </ul>
             </div>
             <div class="fa-divide"></div>
@@ -135,7 +139,7 @@
                 <i class="fa fa-cog"></i>
                 <span class="badge-sonar"></span>
             </a>
-            <a href="{{ path('app_login') }}">
+            <a href="{{ path('app_logout') }}">
                 <i class="fa fa-power-off"></i>
             </a>
         </div>

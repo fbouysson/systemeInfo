@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\AffectationSalon;
+use App\Entity\Messages;
 use App\Entity\Salons;
 use App\Entity\UserUCO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,15 +19,15 @@ class MenuController extends AbstractController
         $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
 
         $user = $this->getUser();
-        //$username = $em->getRepository(UserUCO::class)->findOneBy(["loginIdUser" => $user->getId()])->getLoginUsername();
-        //$messages = $em->getRepository(Messages::class)->findBy(["idSalon" => 1],array("idMessages" => "asc"));
+        $username = $user->getUsername();
+        $messages = $em->getRepository(Messages::class)->findBy(["idSalon" => 1],array("idMessages" => "asc"));
 
-        //$salonsId = $em->getRepository(AffectationSalon::class)->findBy(["idUser" => $user->getId()]);
+        $salonsId = $em->getRepository(AffectationSalon::class)->findBy(["idUser" => $user->getId()]);
         $listSalon = "";
-/*
+
         foreach ($salonsId as $elt){
             $listSalon .= $elt->getIdSalon().",";
-        }*/
+        }
 
         $listSalon = substr($listSalon, 0, -1);
 
@@ -36,9 +37,9 @@ class MenuController extends AbstractController
             'controller_name' => 'MenuController',
             'user' => $user,
             'id' => $user->getId(),
-            //'username' => $username,
+            'username' => $username,
             'salons' => $salons,
-            //'messages' => $messages,
+            'messages' => $messages,
         ]);
     }
 

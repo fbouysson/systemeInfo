@@ -83,7 +83,9 @@ class UCOAuthenticator extends AbstractFormLoginAuthenticator
     {
         // Check the user's password or other credentials and return true or false
         // If there are no credentials to check, you can just return true
-        throw new Exception('TODO: check the credentials inside '.__FILE__);
+        if ($credentials != []) {
+            return true;
+        }else return false;
     }
 
     /**

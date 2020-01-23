@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8"/>
     <title>UCO : {% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     {% block stylesheets %}
@@ -100,7 +101,6 @@
                             </ul>
                         </div>
                         {% endif %}
-
                     </li>
                     {% if user.id == 4 %}
                     <li class="sidebar-dropdown">
@@ -155,7 +155,8 @@
 </body>
 
 {% block js %}
-    <script type="text/javascript" src="{{asset('js/all.js')}}"></script>
+
+    <script type="text/javascript" src="{{ asset('js/all.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/popper.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jQuery.min.js') }}"></script>
     <script type="text/javascript" src="{{asset('js/bootstrap.min.js')}}"></script>

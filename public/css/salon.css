@@ -3,7 +3,7 @@ body {
 }
 
 .divMessage {
-    width: 90%;
+    width: 70%;
     border: 1px solid grey;
     border-radius: 5px;
     padding: 10px;
@@ -14,10 +14,29 @@ body {
     overflow-x: hidden;
 }
 
+.info{
+    text-align: center;
+    color: grey;
+    font-size: 11px;
+}
+
 .divInputMessage{
-    width: 90%;
+    width: 70%;
     border: none;
     margin-top: 20px;
+}
+
+.inputListeUser{
+    position: fixed;
+    width: 20%;
+    right: 2%;
+    padding: 20px;
+    top: 40px;
+    border: 1px solid grey;
+}
+
+.addUser{
+    width: 80%;
 }
 
 .noMessage {

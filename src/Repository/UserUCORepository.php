@@ -2,10 +2,11 @@
 
 namespace App\Repository;
 
-use App\Entity\UCOUser;
 use App\Entity\UserUCO;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\DBAL\DBALException;
+
 
 /**
  * @method UserUCO|null find($id, $lockMode = null, $lockVersion = null)
@@ -37,15 +38,38 @@ class UserUCORepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?UCOUser
+
+    /**
+     * @param $idSalon
+     * @return array
+     * @throws DBALException
+     */
+    public function getAllUserInSalon($idSalon)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $sql = "SELECT u.id_user, u.login_username from useruco u
+left join affectation_salon a on u.id_user = a.id_user
+Where a.id_salon = $idSalon";
+
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
-    */
+
+    /**
+     * @param $idSalon
+     * @return array
+     * @throws DBALException
+     */
+    public function getAllUserNotInSalon($idSalon)
+    {
+        $sql =  "SELECT u.id_user, u.login_username from useruco u where u.id_user not in (SELECT u.id_user from useruco u left join affectation_salon a on u.id_user = a.id_user Where a.id_salon = $idSalon)";
+
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }

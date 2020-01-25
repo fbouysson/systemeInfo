@@ -43,15 +43,27 @@ class AffectationSalon
     {
         $this->setDatearrivee (new DateTime());
     }
-    
+
     public function getIdSalon(): ?int
     {
         return $this->idSalon;
     }
 
+    public function setIdSalon(int $idSalon): self
+    {
+        $this->idSalon = $idSalon;
+        return $this;
+    }
+
     public function getIdUser(): ?int
     {
         return $this->idUser;
+    }
+
+    public function setIdUser(int $idUser): self
+    {
+        $this->idUser = $idUser;
+        return $this;
     }
 
     public function getDatearrivee(): ?DateTimeInterface

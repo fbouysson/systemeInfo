@@ -7,7 +7,11 @@
 {% block title %}Salon{% endblock %}
 
 {% block body %}
+    <div id="divStatut">
+        Connection...
+    </div>
     <div class="divMessage" id="divMessage">
+
         {% if messages is empty %}
             <div class="noMessage"><span>Aucun message</span></div>
         {% else %}
@@ -27,17 +31,69 @@
     <div class="input-group mb-3 divInputMessage">
         <input id="inputMsg" type="text" class="form-control" maxlength="255" placeholder="Ecrivez un message..." aria-label="Recipient's username" aria-describedby="basic-addon2" style="border: 1px solid grey">
         <div class="input-group-append">
-            <button class="btn btn-outline-info btnSend" type="button" onclick="sendMsg()"><i class="fab fa-telegram-plane"></i></button>
+            <button class="btn btn-outline-info btnSend" type="button" onclick="sendMsg()" id="btnSend"><i class="fab fa-telegram-plane"></i></button>
         </div>
+    </div>
+
+    <div class="inputListeUser card">
+        <div>
+            <h4>Utilisateur présent : </h4>
+            <ul class="list-group">
+                {% for user in listeUserInSalon %}
+                    <li class="list-group-item">
+                        {{ user.login_username }}
+                        {% if salon.idCreateurSalon == id %}
+                            {% if user.id_user != salon.idCreateurSalon %}
+                            <button class="btn btn-outline-danger" onclick="delUser({{ user.id_user }})" style="float: right"><i class="far fa-trash-alt"></i></button>
+                            {% endif %}
+
+                            {% else %}
+                                {% if user.id_user == id %}
+                                    <button class="btn btn-outline-danger" onclick="delUser({{ user.id_user }})" style="float: right"><i class="fas fa-sign-out-alt"></i></button>
+                                {% endif %}
+                            {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <br>
+        {% if listeUserNotInSalon is not empty%}
+        <div class="row">
+            <select class="custom-select col-7 offset-1" id="selectAddUser" style="cursor: pointer">
+                <option value="" selected style="cursor: pointer">Ajouter</option>
+                {% for user in listeUserNotInSalon %}
+                    <option value="{{ user.id_user }}" style="cursor: pointer">{{ user.login_username }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-info col-2 offset-1" onclick="addUser()" style="display: inline-block"><i class="fas fa-user-plus"></i></button>
+        </div>
+        {% endif %}
     </div>
 {% endblock %}
 
 
 {% block javascripts %}
     <script type="text/javascript">
+
         $(document).ready(function () {
             let div = document.getElementById("divMessage");
             div.scrollTop = div.scrollHeight;
+        });
+
+        var wsUrl = '{{ ws_url }}';
+        var username = '{{ username }}';
+        var channel = '{{ idSalon }}';
+        var id = '{{ id }}';
+        var ws = new WebSocket('ws://' + wsUrl);
+    </script>
+    <script type="text/javascript" src="{{ asset('js/sf-websocket.js') }}"></script>
+    <script type="text/javascript">
+        window.addEventListener("beforeunload", function(event) {
+            ws.send(JSON.stringify({
+                action: 'unsubscribe',
+                channel: channel,
+                user: username
+            }));
         });
 
         // Get the input field
@@ -55,24 +111,67 @@
             let input = document.getElementById("inputMsg");
             let msg = input.value;
             let div = document.getElementById("divMessage");
-            div.innerHTML += `<div class="bubbleRight slide-left"> <span>${msg}</span></div>`;
+            //div.innerHTML += `<div class="bubbleRight slide-left"> <span>${msg}</span></div>`;
 
-            div.scrollTop = div.scrollHeight;
             input.value = "";
+
+            ws.send(JSON.stringify({
+                action: 'message',
+                user: username,
+                message: msg,
+                channel: channel,
+                id:id,
+            }));
 
             if(msg != null && msg !== "" && msg.replace(" ","").replace("\n","") !== ""){
                 let Route = '{{ path('send_msg') }}';
                 $.ajax({
                     url : Route,
                     type : 'POST',
-                    data : "msg=" + msg,
+                    data : "msg=" + msg + "&idSalon="+1,
                     dataType : 'json',
                     success: function () {
-                        div.lastElementChild.classList.remove("slide-left");
+                        //div.lastElementChild.classList.remove("slide-left");
                     }
                 });
             }
         }
 
+        function addUser() {
+            let select = document.getElementById("selectAddUser");
+            if(select.value !== ""){
+                $.ajax({
+                    url : '{{ path('addUser') }}',
+                    type : 'POST',
+                    data : "idUser=" + select.value + "&idSalon=" + '{{ idSalon }}',
+                    dataType : 'json',
+                    success: function () {
+                        window.location = '{{ path('salon', { "id": idSalon}) }}'
+                    }
+                });
+            }
+        }
+
+        function delUser(id) {
+            let txt;
+            if(id != '{{ id }}'){
+                txt = "Voulez-vous vraiment suprimer cette utilisateur de ce salon ?";
+            }else{
+                txt = "Voulez-vous vraiment quitter ce salon ?";
+            }
+
+            let r = confirm(txt);
+            if (r === true) {
+                $.ajax({
+                    url : '{{ path('delUser') }}',
+                    type : 'POST',
+                    data : "idUser=" + id + "&idSalon=" + '{{ idSalon }}',
+                    dataType : 'json',
+                    success: function () {
+                        window.location = '{{ path('salon', { "id": idSalon}) }}'
+                    }
+                });
+            }
+        }
     </script>
 {% endblock %}

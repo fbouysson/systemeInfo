@@ -3,10 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\AffectationSalon;
-use App\Entity\Login;
 use App\Entity\Messages;
 use App\Entity\Salons;
 use App\Entity\UserUCO;
+use App\Messages\Message;
+use Doctrine\DBAL\DBALException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,25 +20,38 @@ class SalonController extends AbstractController
      * @Route("/salon/{id}", name="salon")
      * @param $id
      * @return Response
+     * @throws DBALException
      */
     public function index($id)
     {
         $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
-
         $user = $this->getUser();
-        $username = $user->getUsername();
-        $messages = $em->getRepository(Messages::class)->findBy(["idSalon" => $id],array("idMessages" => "asc"));
 
-        $salonsId = $em->getRepository(AffectationSalon::class)->findBy(["idUser" => $user->getId()]);
-        $listSalon = "";
+        $ifInSalon = $em->getRepository(AffectationSalon::class)->findOneBy(["idUser" => $user->getId(), "idSalon" => $id]);
 
-        foreach ($salonsId as $elt){
-            $listSalon .= $elt->getIdSalon().",";
+        if($ifInSalon != []) {
+            $username = $user->getUsername();
+            $messages = $em->getRepository(Messages::class)->findBy(["idSalon" => $id], array("idMessages" => "asc"));
+
+            $listeUser = $em->getRepository(UserUCO::class)->getAllUserInSalon($id);
+            $listeUserOut = $em->getRepository(UserUCO::class)->getAllUserNotInSalon($id);
+
+            $salonsId = $em->getRepository(AffectationSalon::class)->findBy(["idUser" => $user->getId()]);
+
+            $listSalon = "";
+
+            foreach ($salonsId as $elt) {
+                $listSalon .= $elt->getIdSalon() . ",";
+            }
+
+            $listSalon = substr($listSalon, 0, -1);
+
+            $salons = $em->getRepository(Salons::class)->findBy(["idSalon" => [$listSalon]]);
+            $salon = $em->getRepository(Salons::class)->find($id);
+
+        }else{
+            return $this->redirectToRoute('menu');
         }
-
-        $listSalon = substr($listSalon, 0, -1);
-
-        $salons = $em->getRepository(Salons::class)->findBy(["idSalon" => [$listSalon]]);
 
         return $this->render('salon/index.html.twig', [
             'controller_name' => 'SalonController',
@@ -46,6 +60,11 @@ class SalonController extends AbstractController
             'username' => $username,
             'messages' => $messages,
             'salons' => $salons,
+            'idSalon' => $id,
+            'listeUserInSalon' => $listeUser,
+            'listeUserNotInSalon' => $listeUserOut,
+            'salon' => $salon,
+            'ws_url' => '127.0.0.1:8080',
         ]);
     }
 
@@ -60,10 +79,12 @@ class SalonController extends AbstractController
         $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
 
         $msg = $request->get("msg");
+        $idSalon = $request->get("idSalon");
+
         $username = $user->getUsername();
 
         $message = new Messages();
-        $message->setIdSalon(1)
+        $message->setIdSalon($idSalon)
             ->setIdUser($user->getId())
             ->setMessage($msg)
             ->setUsername($username);
@@ -72,6 +93,45 @@ class SalonController extends AbstractController
         $em->flush();
 
         $result = array("Username" => $username, "msg" => $msg);
+
         return new JsonResponse($result);
+    }
+
+    /**
+     * @Route("/addUser", name="addUser")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function addUser(Request $request){
+        $idSalon = $request->get("idSalon");
+        $idUser = $request->get("idUser");
+
+        $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
+        $aff = new AffectationSalon();
+        $aff->setIdSalon($idSalon)
+            ->setIdUser($idUser);
+
+        $em->persist($aff);
+        $em->flush();
+
+        return $this->json("ok");
+    }
+
+    /**
+     * @Route("/delUser", name="delUser")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function delUser(Request $request){
+        $idSalon = $request->get("idSalon");
+        $idUser = $request->get("idUser");
+
+        $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
+        $aff = $em->getRepository(AffectationSalon::class)->findOneBy(["idSalon" => $idSalon, "idUser" => $idUser]);
+
+        $em->remove($aff);
+        $em->flush();
+
+        return $this->json("ok");
     }
 }

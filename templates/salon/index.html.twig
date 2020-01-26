@@ -11,21 +11,16 @@
         Connection...
     </div>
     <div class="divMessage" id="divMessage">
-
-        {% if messages is empty %}
-            <div class="noMessage"><span>Aucun message</span></div>
-        {% else %}
-            {% for message in messages %}
-                <div {% if message.idUser == id %} class="bubbleRight" {% else %} class="bubbleLeft"{% endif %}>
-                    <span>{{ message.message }}</span>
+        {% for message in messages %}
+            <div {% if message.idUser == id %} class="bubbleRight" {% else %} class="bubbleLeft"{% endif %}>
+                <span>{{ message.message }}</span>
+            </div>
+            {% if message.idUser != id %}
+                <div class="bubbleLeftSmall">
+                    <span>{{ message.username }}</span>
                 </div>
-                {% if message.idUser != id %}
-                    <div class="bubbleLeftSmall">
-                        <span>{{ message.username }}</span>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
+            {% endif %}
+        {% endfor %}
     </div>
 
     <div class="input-group mb-3 divInputMessage">
@@ -68,6 +63,34 @@
             <button class="btn btn-info col-2 offset-1" onclick="addUser()" style="display: inline-block"><i class="fas fa-user-plus"></i></button>
         </div>
         {% endif %}
+        {% if salon.idCreateurSalon == id %}
+            <br>
+            <div class="row">
+                <div class="col-10 offset-1">
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#delSalonModal">Supprimer le salon</button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="modal fade" id="delSalonModal" tabindex="-1" role="dialog" aria-labelledby="delSalonModal"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="background: rgba(49,53,61,0.94) !important;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel" style="color: white">Suppression du salon </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: white">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span style="color: white">Attention, cette action sera irréversible !<br> Supprimer quand même ? </span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Non</button>
+                    <button type="button" class="btn btn-danger" onclick="delSalon({{ idSalon}})">Oui</button>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -128,7 +151,7 @@
                 $.ajax({
                     url : Route,
                     type : 'POST',
-                    data : "msg=" + msg + "&idSalon="+1,
+                    data : "msg=" + msg + "&idSalon="+channel,
                     dataType : 'json',
                     success: function () {
                         //div.lastElementChild.classList.remove("slide-left");
@@ -143,7 +166,7 @@
                 $.ajax({
                     url : '{{ path('addUser') }}',
                     type : 'POST',
-                    data : "idUser=" + select.value + "&idSalon=" + '{{ idSalon }}',
+                    data : "idUser=" + select.value + "&idSalon=" + channel,
                     dataType : 'json',
                     success: function () {
                         window.location = '{{ path('salon', { "id": idSalon}) }}'
@@ -165,13 +188,27 @@
                 $.ajax({
                     url : '{{ path('delUser') }}',
                     type : 'POST',
-                    data : "idUser=" + id + "&idSalon=" + '{{ idSalon }}',
+                    data : "idUser=" + id + "&idSalon=" + channel,
                     dataType : 'json',
                     success: function () {
                         window.location = '{{ path('salon', { "id": idSalon}) }}'
                     }
                 });
             }
+        }
+
+        function delSalon(id) {
+            showLoader();
+            let Route = '{{ path('delSalon') }}';
+            $.ajax({
+                url : Route,
+                type : 'POST',
+                data : "idSalon=" + id,
+                dataType : 'json',
+                success: function () {
+                    window.location = '{{ path('menu') }}';
+                }
+            });
         }
     </script>
 {% endblock %}

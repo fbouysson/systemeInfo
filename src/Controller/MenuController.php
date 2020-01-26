@@ -31,7 +31,7 @@ class MenuController extends AbstractController
 
         $listSalon = substr($listSalon, 0, -1);
 
-        $salons = $em->getRepository(Salons::class)->findBy(["idSalon" => [$listSalon]]);
+        $salons = $em->getRepository(Salons::class)->findBy(["idSalon" => explode(",",$listSalon)]);
 
         return $this->render('menu/index.html.twig', [
             'controller_name' => 'MenuController',

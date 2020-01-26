@@ -42,8 +42,9 @@
                 </div>
             </div>
             <!-- sidebar-header  -->
-            <div class="sidebar-search">
-                <div>
+            <div class="sidebar-search text-center" style="padding: 5px">
+                <button class="btn btn-outline-info" style="width: 100%" data-toggle="modal" data-target="#basicExampleModal">Créer un salon</button>
+                {#<div>
                     <div class="input-group">
                         <label style="width: 75%; margin-right: 10px">
                             <input type="text" class="form-control search-menu" placeholder="Rechercher...">
@@ -55,7 +56,7 @@
 
                         </div>
                     </div>
-                </div>
+                </div>#}
             </div>
             <!-- sidebar-search  -->
             <div class="sidebar-menu">
@@ -102,7 +103,7 @@
                         </div>
                         {% endif %}
                     </li>
-                    {% if user.id == 4 %}
+                   {# {% if user.id == 4 %}
                     <li class="sidebar-dropdown">
                         <a href="#">
                             <i class="fas fa-sliders-h"></i>
@@ -119,15 +120,14 @@
                             </ul>
                         </div>
                     </li>
-                    {% endif %}
+                    {% endif %}#}
                 </ul>
             </div>
-            <div class="fa-divide"></div>
             <!-- sidebar-menu  -->
         </div>
         <!-- sidebar-content  -->
         <div class="sidebar-footer">
-            <a href="#">
+           {# <a href="#">
                 <i class="fa fa-bell"></i>
                 <span class="badge badge-pill badge-warning notification">3</span>
             </a>
@@ -138,8 +138,8 @@
             <a href="#">
                 <i class="fa fa-cog"></i>
                 <span class="badge-sonar"></span>
-            </a>
-            <a href="{{ path('app_logout') }}">
+            </a>#}
+            <a href="{{ path('app_logout') }}" style="width: 100%">
                 <i class="fa fa-power-off"></i>
             </a>
         </div>
@@ -153,6 +153,30 @@
     </main>
 </div>
 </body>
+
+<div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background: rgba(49,53,61,0.94) !important;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color: white">Nom du salon : </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="color: white">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="md-form" style="width: 90%; margin-left: 5%">
+                    <input type="text" id="nomSalon" class="form-control" style="background: white; border: 1px solid grey">
+                    <label for="form1"></label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-info" onclick="createSalon()">Valider</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% block js %}
 
@@ -203,6 +227,29 @@
 
         function hideLoader() {
             document.getElementById("loader").style.display = "none";
+        }
+
+        function createSalon() {
+            showLoader();
+
+            let input = document.getElementById("nomSalon");
+            let nom = input.value;
+
+            if(nom.replace(" ","").replace("\n","") !== ""){
+                let Route = '{{ path('addSalon') }}';
+                $.ajax({
+                    url : Route,
+                    type : 'POST',
+                    data : "nomSalon=" + nom,
+                    dataType : 'json',
+                    success: function (json) {
+                        let path = '{{ path('salon', { "id": "tmp"}) }}';
+                        path = path.replace("tmp", json);
+                        window.location = path;
+                    }
+                });
+            }
+
         }
     </script>
 {% endblock %}

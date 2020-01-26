@@ -6,10 +6,10 @@ use App\Entity\AffectationSalon;
 use App\Entity\Messages;
 use App\Entity\Salons;
 use App\Entity\UserUCO;
-use App\Messages\Message;
 use Doctrine\DBAL\DBALException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -131,6 +131,50 @@ class SalonController extends AbstractController
 
         $em->remove($aff);
         $em->flush();
+
+        return $this->json("ok");
+    }
+
+    /**
+     * @Route("/addSalon", name="addSalon")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function addSalon(Request $request){
+        $nomSalon = $request->get("nomSalon");
+
+        $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
+        $salon = new Salons();
+        $salon->setIdCreateurSalon($this->getUser()->getId())
+            ->setNameSalon($nomSalon);
+
+        $em->persist($salon);
+        $em->flush();
+
+        $aff = new AffectationSalon();
+        $aff->setIdUser($this->getUser()->getId())
+            ->setIdSalon($salon->getIdSalon());
+        $em->persist($aff);
+        $em->flush();
+
+        return $this->json($salon->getIdSalon());
+    }
+
+    /**
+     * @Route("/delSalon", name="delSalon")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function delSalon(Request $request){
+        $idSalon = $request->get("idSalon");
+
+        $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
+
+        $affs = $em->getRepository(AffectationSalon::class)->findBy(["idSalon" => $idSalon]);
+        foreach ($affs as $aff){
+            $em->remove($aff);
+            $em->flush();
+        }
 
         return $this->json("ok");
     }

@@ -46,7 +46,7 @@ class SalonController extends AbstractController
 
             $listSalon = substr($listSalon, 0, -1);
 
-            $salons = $em->getRepository(Salons::class)->findBy(["idSalon" => [$listSalon]]);
+            $salons = $em->getRepository(Salons::class)->findBy(["idSalon" => explode(",",$listSalon)]);
             $salon = $em->getRepository(Salons::class)->find($id);
 
         }else{
@@ -142,11 +142,13 @@ class SalonController extends AbstractController
      */
     public function addSalon(Request $request){
         $nomSalon = $request->get("nomSalon");
+        $icon = $request->get("icon");
 
         $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
         $salon = new Salons();
         $salon->setIdCreateurSalon($this->getUser()->getId())
-            ->setNameSalon($nomSalon);
+            ->setNameSalon($nomSalon)
+            ->setIconSalon($icon);
 
         $em->persist($salon);
         $em->flush();
@@ -154,6 +156,7 @@ class SalonController extends AbstractController
         $aff = new AffectationSalon();
         $aff->setIdUser($this->getUser()->getId())
             ->setIdSalon($salon->getIdSalon());
+
         $em->persist($aff);
         $em->flush();
 

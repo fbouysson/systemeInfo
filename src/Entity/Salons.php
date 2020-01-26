@@ -35,6 +35,13 @@ class Salons
      */
     private $idCreateurSalon;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="icon_salon", type="string", length=45, nullable=true)
+     */
+    private $iconSalon = '';
+
     public function getIdSalon(): ?int
     {
         return $this->idSalon;
@@ -64,5 +71,16 @@ class Salons
         return $this;
     }
 
+    public function getIconSalon(): ?string
+    {
+        return $this->iconSalon;
+    }
+
+    public function setIconSalon(string $iconSalon): self
+    {
+        $this->iconSalon = $iconSalon;
+
+        return $this;
+    }
 
 }

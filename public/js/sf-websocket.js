@@ -29,7 +29,7 @@
             div.innerHTML = `<span>${data["message"]}</span>`;
             _receiver.appendChild(div);
 
-            if (msgId != id) {
+            if (msgId != id && msgId != 0) {
                 let divSmall = document.createElement("div");
                 divSmall.classList.add(classeSmall1);
                 divSmall.classList.add(classe2);

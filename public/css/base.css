@@ -1,3 +1,8 @@
+
+.liSalon:hover{
+    color: rgba(23,162,184,0.94) !important;
+}
+
 @keyframes swing {
     0% {
         transform: rotate(0deg);

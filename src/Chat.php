@@ -83,7 +83,7 @@ class Chat implements MessageComponentInterface
             $conn,
             $channel,
             $this->botName,
-            $user.' à rejoin le chat',
+            $user.' a rejoin le chat',
             0
         );
     }
@@ -95,7 +95,7 @@ class Chat implements MessageComponentInterface
             $conn,
             $channel,
             $this->botName,
-            $user.' à quitté le chat',
+            $user.' a quitté le chat',
             0
         );
 

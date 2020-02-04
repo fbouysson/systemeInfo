@@ -108,8 +108,6 @@
       <path value="$PROJECT_DIR$/vendor/symfony/dom-crawler" />
       <path value="$PROJECT_DIR$/vendor/symfony/browser-kit" />
       <path value="$PROJECT_DIR$/vendor/doctrine/common" />
-      <path value="$PROJECT_DIR$/vendor/symfony/templating" />
-      <path value="$PROJECT_DIR$/vendor/friendsofsymfony/user-bundle" />
       <path value="$PROJECT_DIR$/vendor/lcobucci/jwt" />
       <path value="$PROJECT_DIR$/vendor/symfony/mercure-bundle" />
       <path value="$PROJECT_DIR$/vendor/symfony/mercure" />

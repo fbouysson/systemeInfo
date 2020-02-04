@@ -9,7 +9,6 @@ use App\Entity\UserUCO;
 use Doctrine\DBAL\DBALException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -64,7 +63,7 @@ class SalonController extends AbstractController
             'listeUserInSalon' => $listeUser,
             'listeUserNotInSalon' => $listeUserOut,
             'salon' => $salon,
-            'ws_url' => '192.168.11.2:8080',
+            'ws_url' => '127.0.0.1:8080',
         ]);
     }
 

@@ -1,17 +1,15 @@
 <?php
 
-
 namespace App;
-
 
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Command\Command;
 
-class Command extends ContainerAwareCommand
+class CommandChat extends Command
 {
     protected function configure()
     {
@@ -26,7 +24,7 @@ class Command extends ContainerAwareCommand
         $server = IoServer::factory(
             new HttpServer(new WsServer(new Chat())),
             8080,
-            '192.168.11.2'
+            '127.0.0.1'
         );
         $server->run();
         echo "ok\n";

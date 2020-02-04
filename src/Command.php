@@ -26,7 +26,7 @@ class Command extends ContainerAwareCommand
         $server = IoServer::factory(
             new HttpServer(new WsServer(new Chat())),
             8080,
-            '127.0.0.1'
+            '192.168.11.2'
         );
         $server->run();
         echo "ok\n";

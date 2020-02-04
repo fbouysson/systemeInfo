@@ -5,7 +5,7 @@
 
     let addMessageToChannel = function(message) {
         let data = $.parseJSON(message);
-        if(data["channel"] == channel) {
+        if(data["channel"] == channel && data["message"] != "") {
             let msgId = data["id"];
             let classe1;
             let classe2;
@@ -33,7 +33,7 @@
                 let divSmall = document.createElement("div");
                 divSmall.classList.add(classeSmall1);
                 divSmall.classList.add(classe2);
-                divSmall.innerHTML = `<span>${username}</span>`;
+                divSmall.innerHTML = `<span>${data["user"]}</span>`;
                 _receiver.appendChild(divSmall);
                 divSmall.classList.remove(classe2);
             }

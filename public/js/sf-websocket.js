@@ -5,7 +5,7 @@
 
     let addMessageToChannel = function(message) {
         let data = $.parseJSON(message);
-        if(data["channel"] == channel && data["message"] != "") {
+        if(data["channel"] == channel && ((data["message"] != "" && data["message"] != undefined) || data["img"] != null)) {
             let msgId = data["id"];
             let classe1;
             let classe2;
@@ -23,22 +23,47 @@
                 classeSmall1 = "bubbleLeftSmall";
             }
 
-            let div = document.createElement("div");
-            div.classList.add(classe1);
-            div.classList.add(classe2);
-            div.innerHTML = `<span>${data["message"]}</span>`;
-            _receiver.appendChild(div);
+            if(data["message"] != "" && data["message"] != undefined) {
+                let div = document.createElement("div");
+                div.classList.add(classe1);
+                div.classList.add(classe2);
+                div.innerHTML = `<span>${data["message"]}</span>`;
+                _receiver.appendChild(div);
 
-            if (msgId != id && msgId != 0) {
-                let divSmall = document.createElement("div");
-                divSmall.classList.add(classeSmall1);
-                divSmall.classList.add(classe2);
-                divSmall.innerHTML = `<span>${data["user"]}</span>`;
-                _receiver.appendChild(divSmall);
-                divSmall.classList.remove(classe2);
+                if (msgId != id && msgId != 0) {
+                    let divSmall = document.createElement("div");
+                    divSmall.classList.add(classeSmall1);
+                    divSmall.classList.add(classe2);
+                    divSmall.innerHTML = `<span>${data["user"]}</span>`;
+                    _receiver.appendChild(divSmall);
+                    divSmall.classList.remove(classe2);
+                }
+                div.classList.remove(classe2);
+                _receiver.scrollTop = _receiver.scrollHeight;
             }
-            div.classList.remove(classe2);
-            _receiver.scrollTop = _receiver.scrollHeight;
+
+            if(data["img"] != null){
+                let div = document.createElement("div");
+                let img = document.createElement("img");
+                img.classList.add("imgChatRight");
+                img.src = `../../Uploads/img${data['channel']}/${data["img"]}`;
+
+                div.classList.add(classe1);
+                div.classList.add(classe2);
+                div.appendChild(img);
+                _receiver.appendChild(div);
+
+                if (msgId != id && msgId != 0) {
+                    let divSmall = document.createElement("div");
+                    divSmall.classList.add(classeSmall1);
+                    divSmall.classList.add(classe2);
+                    divSmall.innerHTML = `<span>${data["user"]}</span>`;
+                    _receiver.appendChild(divSmall);
+                    divSmall.classList.remove(classe2);
+                }
+                div.classList.remove(classe2);
+                _receiver.scrollTop = _receiver.scrollHeight;
+            }
         }
     };
 
@@ -59,7 +84,7 @@
             channel: channel,
             user: username
         }));
-        _statut.innerHTML = 'Connected !';
+        _statut.innerHTML = ' Connecté !';
     };
 
     ws.onmessage = function (event) {
@@ -72,10 +97,10 @@
             channel: channel,
             user: username
         }));
-        _statut.innerHTML = 'Connection closed';
+        _statut.innerHTML = 'Connection fermé';
     };
 
     ws.onerror = function () {
-        _statut.innerHTML = 'An error occured!';
+        _statut.innerHTML = 'Une erreur est survenu !';
     };
 })();

@@ -7,14 +7,24 @@
 {% block title %}Salon{% endblock %}
 
 {% block body %}
-    <div id="divStatut">
-        Connection...
+    <div class="col-10" style="margin-top: -30px; display: flex">
+        <div style="margin-right: 5px">
+            <strong>{{ salon.nameSalon }} : </strong>
+        </div>
+        <div id="divStatut">Connection...</div>
     </div>
     <div class="divMessage" id="divMessage">
         {% for message in messages %}
-            <div {% if message.idUser == id %} class="bubbleRight" {% else %} class="bubbleLeft"{% endif %}>
-                <span>{{ message.message }}</span>
-            </div>
+            {% if message.type == "msg" %}
+                <div {% if message.idUser == id %} class="bubbleRight" {% else %} class="bubbleLeft"{% endif %}>
+                    <span>{{ message.message }}</span>
+                </div>
+            {% else %}
+                <div {% if message.idUser == id %} class="bubbleRight" {% else %} class="bubbleLeft"{% endif %}>
+                    <img {% if message.idUser == id %} class="imgChatRight" {% else %} class="imgChatLeft"{% endif %}
+                            alt="{{ message.message }}" src="{{ asset('Uploads/img'~idSalon~"/"~message.message) }}">
+                </div>
+            {% endif %}
             {% if message.idUser != id %}
                 <div class="bubbleLeftSmall">
                     <span>{{ message.username }}</span>
@@ -23,14 +33,27 @@
         {% endfor %}
     </div>
 
+    <div class="input-group divInputImg">
+        <button class="btn btn-outline-secondary btnImg" onclick="document.getElementById('inputImg').click()"
+                id="btnImg"><i class="fas fa-plus"></i> <i class="far fa-image"></i></button>
+        <input id="inputImg" type="file" style="display: none" accept="image/*" onchange="addImg(this)">
+        <input id="imputTxtImg" type="text" class="form-control" style="display: none"
+               accept="image/x-png,image/gif,image/jpeg">
+        <button onclick="removeImg()" id="removeImg"
+                style="border: none; background: transparent; cursor: pointer; color: grey; margin-left: -22px; z-index: 10; display: none">
+            <i class="fas fa-times"></i></button>
+    </div>
     <div class="input-group mb-3 divInputMessage">
-        <input id="inputMsg" type="text" class="form-control" maxlength="255" placeholder="Ecrivez un message..." aria-label="Recipient's username" aria-describedby="basic-addon2" style="border: 1px solid grey">
+        <input id="inputMsg" type="text" class="form-control inputMsg" maxlength="255"
+               placeholder="Ecrivez un message..." aria-label="Recipient's username" aria-describedby="basic-addon2"
+               style="border: 1px solid grey">
         <div class="input-group-append">
-            <button class="btn btn-outline-info btnSend" type="button" onclick="sendMsg()" id="btnSend"><i class="fab fa-telegram-plane"></i></button>
+            <button class="btn btn-outline-info btnSend" type="button" onclick="sendImg(); sendMsg();" id="btnSend"><i
+                        class="fab fa-telegram-plane"></i></button>
         </div>
     </div>
 
-    <div class="inputListeUser card" style="margin-top: 20px;">
+    <div class="inputListeUser card" style="margin-top: -10px;">
         <div>
             <h4>Utilisateur présent : </h4>
             <ul class="list-group">
@@ -39,35 +62,40 @@
                         {{ user.login_username }}
                         {% if salon.idCreateurSalon == id %}
                             {% if user.id_user != salon.idCreateurSalon %}
-                            <button class="btn btn-outline-danger" onclick="delUser({{ user.id_user }})" style="float: right"><i class="far fa-trash-alt"></i></button>
+                                <button class="btn btn-outline-danger" onclick="delUser({{ user.id_user }})"
+                                        style="float: right"><i class="far fa-trash-alt"></i></button>
                             {% endif %}
 
-                            {% else %}
-                                {% if user.id_user == id %}
-                                    <button class="btn btn-outline-danger" onclick="delUser({{ user.id_user }})" style="float: right"><i class="fas fa-sign-out-alt"></i></button>
-                                {% endif %}
+                        {% else %}
+                            {% if user.id_user == id %}
+                                <button class="btn btn-outline-danger" onclick="delUser({{ user.id_user }})"
+                                        style="float: right"><i class="fas fa-sign-out-alt"></i></button>
                             {% endif %}
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>
         </div>
         <br>
-        {% if listeUserNotInSalon is not empty%}
-        <div class="row">
-            <select class="custom-select col-7 offset-1" id="selectAddUser" style="cursor: pointer">
-                <option value="" selected style="cursor: pointer">Ajouter</option>
-                {% for user in listeUserNotInSalon %}
-                    <option value="{{ user.id_user }}" style="cursor: pointer">{{ user.login_username }}</option>
-                {% endfor %}
-            </select>
-            <button class="btn btn-info col-2 offset-1" onclick="addUser()" style="display: inline-block"><i class="fas fa-user-plus"></i></button>
-        </div>
+        {% if listeUserNotInSalon is not empty %}
+            <div class="row">
+                <select class="custom-select col-7 offset-1" id="selectAddUser" style="cursor: pointer">
+                    <option value="" selected style="cursor: pointer">Ajouter</option>
+                    {% for user in listeUserNotInSalon %}
+                        <option value="{{ user.id_user }}" style="cursor: pointer">{{ user.login_username }}</option>
+                    {% endfor %}
+                </select>
+                <button class="btn btn-info col-2 offset-1" onclick="addUser()" style="display: inline-block"><i
+                            class="fas fa-user-plus"></i></button>
+            </div>
         {% endif %}
         {% if salon.idCreateurSalon == id %}
             <br>
-                <div class="text-center" style="width: 100% !important;">
-                    <button class="btn btn-danger" style="width: 92% !important;" data-toggle="modal" data-target="#delSalonModal">Supprimer le salon</button>
-                </div>
+            <div class="text-center" style="width: 100% !important;">
+                <button class="btn btn-danger" style="width: 92% !important;" data-toggle="modal"
+                        data-target="#delSalonModal">Supprimer le salon
+                </button>
+            </div>
         {% endif %}
     </div>
     <div class="modal fade" id="delSalonModal" tabindex="-1" role="dialog" aria-labelledby="delSalonModal"
@@ -85,7 +113,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-dismiss="modal">Non</button>
-                    <button type="button" class="btn btn-danger" onclick="delSalon({{ idSalon}})">Oui</button>
+                    <button type="button" class="btn btn-danger" onclick="delSalon({{ idSalon }})">Oui</button>
                 </div>
             </div>
         </div>
@@ -109,7 +137,7 @@
     </script>
     <script type="text/javascript" src="{{ asset('js/sf-websocket.js') }}"></script>
     <script type="text/javascript">
-        window.addEventListener("beforeunload", function(event) {
+        window.addEventListener("beforeunload", function (event) {
             ws.send(JSON.stringify({
                 action: 'unsubscribe',
                 channel: channel,
@@ -121,14 +149,78 @@
         let input = document.getElementById("inputMsg");
 
         // Execute a function when the user releases a key on the keyboard
-        input.addEventListener("keyup", function(event) {
+        input.addEventListener("keyup", function (event) {
             // Number 13 is the "Enter" key on the keyboard
             if (event.key === "Enter") {
                 sendMsg();
             }
         });
 
-        function sendMsg(){
+        function sendImg() {
+            let inputImg = document.getElementById("inputImg");
+            let file;
+
+            let _URL = window.URL || window.webkitURL;
+
+            if(inputImg.files.length > 0) {
+                if (inputImg.files[0]['type'].split("/")[0] === "image") {
+
+                    file = inputImg.files[0];
+
+                    let img;
+                    let width;
+                    let height;
+
+                    if (file) {
+                        img = new Image();
+                        let objectUrl = _URL.createObjectURL(file);
+                        img.onload = function () {
+                            width = this.width;
+                            height = this.height;
+                            _URL.revokeObjectURL(objectUrl);
+                        };
+                        img.src = objectUrl;
+                    }
+
+                    if(width <= 1024 && height <= 1024) {
+
+                        let formData = new FormData();
+
+                        formData.append('file', file);
+
+                        let Route = '{{ path('send_img', {"salon": idSalon}) }}';
+                        $.ajax({
+                             url: Route,
+                             type: 'POST',
+                             data: formData,
+                             dataType: 'json',
+                             contentType: false,
+                             processData: false,
+                             success: function (data) {
+                                 console.log(data);
+
+                                 ws.send(JSON.stringify({
+                                     action: 'img',
+                                     user: username,
+                                     message: "",
+                                     img: data,
+                                     channel: channel,
+                                     id: id,
+                                 }));
+
+                                 removeImg();
+                             }
+                         })
+                    }else{
+                        alert("Image trop volumineuse");
+                    }
+                } else if (inputImg.size > 1024) {
+                    alert("Le fichier doit être une image !")
+                }
+            }
+        }
+
+        function sendMsg() {
             let input = document.getElementById("inputMsg");
             let msg = input.value;
             let div = document.getElementById("divMessage");
@@ -141,16 +233,16 @@
                 user: username,
                 message: msg,
                 channel: channel,
-                id:id,
+                id: id,
             }));
 
-            if(msg != null && msg !== "" && msg.replace(" ","").replace("\n","") !== ""){
+            if (msg != null && msg !== "" && msg.replace(" ", "").replace("\n", "") !== "") {
                 let Route = '{{ path('send_msg') }}';
                 $.ajax({
-                    url : Route,
-                    type : 'POST',
-                    data : "msg=" + msg + "&idSalon="+channel,
-                    dataType : 'json',
+                    url: Route,
+                    type: 'POST',
+                    data: "msg=" + msg + "&idSalon=" + channel,
+                    dataType: 'json',
                     success: function () {
                         //div.lastElementChild.classList.remove("slide-left");
                     }
@@ -158,14 +250,37 @@
             }
         }
 
+        function removeImg() {
+            let inputImgTxt = document.getElementById("imputTxtImg");
+            let btnRemove = document.getElementById("removeImg");
+            let inputImg = document.getElementById("inputImg");
+
+            btnRemove.style.display = "none";
+            inputImgTxt.style.display = "none";
+            inputImgTxt.valueOf = null;
+
+            inputImg.value = null;
+        }
+
+        function addImg(inputImg) {
+            let inputImgTxt = document.getElementById("imputTxtImg");
+            let btnRemove = document.getElementById("removeImg");
+
+            inputImgTxt.disabled = false;
+            inputImgTxt.value = inputImg.value;
+            inputImgTxt.disabled = true;
+            inputImgTxt.style.display = "block";
+            btnRemove.style.display = "block";
+        }
+
         function addUser() {
             let select = document.getElementById("selectAddUser");
-            if(select.value !== ""){
+            if (select.value !== "") {
                 $.ajax({
-                    url : '{{ path('addUser') }}',
-                    type : 'POST',
-                    data : "idUser=" + select.value + "&idSalon=" + channel,
-                    dataType : 'json',
+                    url: '{{ path('addUser') }}',
+                    type: 'POST',
+                    data: "idUser=" + select.value + "&idSalon=" + channel,
+                    dataType: 'json',
                     success: function () {
                         window.location = '{{ path('salon', { "id": idSalon}) }}'
                     }
@@ -175,19 +290,19 @@
 
         function delUser(id) {
             let txt;
-            if(id != '{{ id }}'){
+            if (id != '{{ id }}') {
                 txt = "Voulez-vous vraiment suprimer cette utilisateur de ce salon ?";
-            }else{
+            } else {
                 txt = "Voulez-vous vraiment quitter ce salon ?";
             }
 
             let r = confirm(txt);
             if (r === true) {
                 $.ajax({
-                    url : '{{ path('delUser') }}',
-                    type : 'POST',
-                    data : "idUser=" + id + "&idSalon=" + channel,
-                    dataType : 'json',
+                    url: '{{ path('delUser') }}',
+                    type: 'POST',
+                    data: "idUser=" + id + "&idSalon=" + channel,
+                    dataType: 'json',
                     success: function () {
                         window.location = '{{ path('salon', { "id": idSalon}) }}'
                     }
@@ -199,10 +314,10 @@
             showLoader();
             let Route = '{{ path('delSalon') }}';
             $.ajax({
-                url : Route,
-                type : 'POST',
-                data : "idSalon=" + id,
-                dataType : 'json',
+                url: Route,
+                type: 'POST',
+                data: "idSalon=" + id,
+                dataType: 'json',
                 success: function () {
                     window.location = '{{ path('menu') }}';
                 }

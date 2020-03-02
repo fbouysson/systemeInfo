@@ -8,6 +8,8 @@ use App\Entity\Salons;
 use App\Entity\UserUCO;
 use Doctrine\DBAL\DBALException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -86,6 +88,7 @@ class SalonController extends AbstractController
         $message->setIdSalon($idSalon)
             ->setIdUser($user->getId())
             ->setMessage($msg)
+            ->setType('msg')
             ->setUsername($username);
 
         $em->persist($message);
@@ -93,8 +96,45 @@ class SalonController extends AbstractController
 
         $result = array("Username" => $username, "msg" => $msg);
 
-        return new JsonResponse($result);
+        return $this->json($result,200);
     }
+
+    /**
+     * @Route("/sendImg/{salon}", name="send_img")
+     * @param Request $request
+     * @param $salon
+     * @return JsonResponse
+     */
+    public function addImg(Request $request, $salon){
+        $img = new File($request->files->get("file"));
+
+        $filesystem = new Filesystem();
+
+        if(!$filesystem->exists("Uploads/img".$salon)){
+            $filesystem->mkdir("Uploads/img".$salon, 0777);
+        }
+
+        $filename = time().".jpeg";
+        $img->move("Uploads/img".$salon,$filename);
+
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
+
+        $username = $user->getUsername();
+
+        $message = new Messages();
+        $message->setIdSalon($salon)
+            ->setIdUser($user->getId())
+            ->setMessage($filename)
+            ->setType('img')
+            ->setUsername($username);
+
+        $em->persist($message);
+        $em->flush();
+
+        return $this->json($filename,200);
+    }
+
 
     /**
      * @Route("/addUser", name="addUser")
@@ -113,7 +153,7 @@ class SalonController extends AbstractController
         $em->persist($aff);
         $em->flush();
 
-        return $this->json("ok");
+        return $this->json("ok",200);
     }
 
     /**
@@ -131,7 +171,7 @@ class SalonController extends AbstractController
         $em->remove($aff);
         $em->flush();
 
-        return $this->json("ok");
+        return $this->json("ok",200);
     }
 
     /**
@@ -159,7 +199,7 @@ class SalonController extends AbstractController
         $em->persist($aff);
         $em->flush();
 
-        return $this->json($salon->getIdSalon());
+        return $this->json($salon->getIdSalon(),200);
     }
 
     /**
@@ -178,6 +218,7 @@ class SalonController extends AbstractController
             $em->flush();
         }
 
-        return $this->json("ok");
+        return $this->json("ok",200);
     }
+
 }

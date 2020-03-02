@@ -1,0 +1,9 @@
+Message avec image : max 1024px de coté et convertion en JPEG.
+Inscription avec Email. (Tester la validité)
+Complexité de mot de passe.
+Actif/ Absent/ Déco par salons.
+Message récap car absent.
+Changement de mot de passe.
+
+
+Affichage du retour des serveurs

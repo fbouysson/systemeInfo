@@ -27,7 +27,8 @@ class Chat implements MessageComponentInterface
             'connection' => $conn,
             'user' => '',
             'id' => '',
-            'channels' => []
+            'channels' => [],
+            'img' => null
         ];
 
         $this->clients->attach($conn);
@@ -59,6 +60,7 @@ class Chat implements MessageComponentInterface
         $user = $messageData->user ?? $this->botName;
         $id = $messageData->id ?? $this->idUser;
         $message = $messageData->message ?? '';
+        $img = $messageData->img ?? null;
 
         switch ($action) {
             case 'subscribe':
@@ -69,6 +71,8 @@ class Chat implements MessageComponentInterface
                 return true;
             case 'message':
                 return $this->sendMessageToChannel($from, $channel, $user, $message, $id);
+            case 'img':
+                return $this->sendImgToChannel($from, $channel, $user, $img, $id);
             default:
                 echo sprintf('Action "%s" is not supported yet!', $action);
                 break;
@@ -118,6 +122,26 @@ class Chat implements MessageComponentInterface
                     'user' => $user,
                     'id' => $id,
                     'message' => $message
+                ]));
+            }
+        }
+        return true;
+    }
+
+    private function sendImgToChannel(ConnectionInterface $conn, $channel, $user, $img, $id)
+    {
+        if (!isset($this->users[$conn->resourceId]['channels'][$channel])) {
+            return false;
+        }
+
+        foreach ($this->users as $connectionId => $userConnection) {
+            if (array_key_exists($channel, $userConnection['channels'])) {
+                $userConnection['connection']->send(json_encode([
+                    'action' => 'img',
+                    'channel' => $channel,
+                    'user' => $user,
+                    'id' => $id,
+                    'img' => $img
                 ]));
             }
         }

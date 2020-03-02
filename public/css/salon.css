@@ -23,7 +23,34 @@ body {
 .divInputMessage{
     width: 70%;
     border: none;
-    margin-top: 20px;
+}
+
+.divInputImg {
+    width: 65.9%;
+    border: none;
+    margin-top: 10px;
+}
+
+.divInputImg input{
+    border: 1px solid grey;
+    border-bottom: none;
+    border-left: none;
+    border-radius: 0 5px 0 0;
+}
+
+.btnImg {
+    border-bottom: 0;
+    border-radius: 5px 0 0 0;
+}
+
+.btnImg i{
+    font-size: 20px;
+    margin: 0 0 -1px -1px;
+    border: 1px solid grey !important;
+}
+
+.inputMsg{
+    border-radius: 0 0 0 5px
 }
 
 .inputListeUser{
@@ -97,6 +124,29 @@ body {
     height: auto;
     display: inline-block;
     text-align: left;
+}
+
+.imgChatRight{
+    margin: 5px 5px;
+    padding: 5px;
+    border: #82ccdd 1px solid;
+    background: #82ccdd;
+    border-radius: 20px;
+    height: auto;
+    display: inline-block;
+    text-align: left;
+    width: 200px;
+}
+
+.imgChatLeft{
+    margin: 5px 5px;
+    padding: 5px;
+    border: #78e08f 1px solid;
+    background: #78e08f;
+    border-radius: 20px;
+    height: auto;
+    display: inline-block;
+    width: 200px;
 }
 
 .bubbleLeft span{

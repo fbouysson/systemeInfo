@@ -49,6 +49,13 @@ class Messages
      */
     private $username;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=3, nullable=false)
+     */
+    private $type;
+
     public function getIdMessages(): ?int
     {
         return $this->idMessages;
@@ -98,6 +105,18 @@ class Messages
     public function setUsername(string $username): self
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Entity\Logs;
 use App\Entity\UserUCO;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -67,7 +68,7 @@ class UCOAuthenticator extends AbstractFormLoginAuthenticator
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Login Username could not be found.');
+            throw new CustomUserMessageAuthenticationException('Nom d\'utilisateur inconnu.');
         }
 
         return $user;
@@ -101,6 +102,7 @@ class UCOAuthenticator extends AbstractFormLoginAuthenticator
             return new RedirectResponse($targetPath);
         }
 
+        $this->entityManager->getRepository(Logs::class)->createLog($request->request->get('username'),null,0);
         return new RedirectResponse($this->urlGenerator->generate('menu'));
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
     }

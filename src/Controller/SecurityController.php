@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Logs;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +17,13 @@ class SecurityController extends AbstractController
      * @Route("/", name="app_login")
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
+            $this->getDoctrine()->getRepository(Logs::class)->createLog($this->getUser()->getUsername(),null,0);
             return $this->redirectToRoute('menu');
         }
 
@@ -35,11 +41,25 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/deconnexion", name="deconnexion")
+     * @throws Exception
+     */
+    public function logdeco()
+    {
+        $this->getDoctrine()->getRepository(Logs::class)->createLog($this->getUser()->getUsername(),null,1);
+        return $this->redirectToRoute("app_logout");
+    }
+
+    /**
      * @Route("/logout", name="app_logout")
      * @throws Exception
      */
     public function logout()
     {
+
+        $this->getDoctrine()->getRepository(Logs::class)->createLog($this->getUser()->getUsername(),null,1);
+
+
         return $this->redirectToRoute("app_login");
     }
 }

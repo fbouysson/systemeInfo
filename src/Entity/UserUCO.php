@@ -6,7 +6,6 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -71,7 +70,6 @@ class UserUCO implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(name="login_password", type="string",type="string", nullable=false)
-     * @Assert\Regex(pattern="/^(?=.*[A-z])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\W+)\S{6,}$/", match=true, message="Le mot de passe doit contenir une majuscule, une minuscule et un caractère spécial")
      */
     private $password;
 

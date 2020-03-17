@@ -12,14 +12,20 @@
 
 <body>
     <div class="row" >
+
         <div class="col-4 offset-4" style="margin-top: 5%; padding: 10px; text-align: center" >
             <h1>Ultimate Chat Online</h1>
 
         </div>
-        <img id="loader" src="{{ asset('img/Loader.gif') }}" alt="" style="position: absolute; z-index: 1000; width: fit-content;left: 45%;top: 30%; display: none"/>
-        <div class="main" style="border: 2px solid lightgrey; padding: 20px; display: inline-block">
 
-            <form method="post" onsubmit="showLoader()">
+        {% if error %}
+            <div class="alert alert-danger col-4 offset-4">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        
+        <img id="loader" src="{{ asset('img/Loader.gif') }}" alt="" style="position: absolute; z-index: 1000; width: fit-content;left: 45%;top: 30%; display: none"/>
+
+        <div class="main col-8" style="border: 2px solid lightgrey; padding: 20px; display: inline-block">
+            <form method="post">
 
                 {#{% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -36,7 +42,7 @@
                        class="form-control styl" required autofocus>
                 <br>
                 <label for="inputPassword" style="font-weight: bold;">Mot de passe :</label>
-                <input type="password" name="password" id="inputPassword" class="form-control styl" required>
+                <input type="password" name="inputPassword" id="inputPassword" class="form-control styl" required>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                 {#
@@ -50,10 +56,11 @@
                     </div>
                 #}
                 <br>
-                <button class="btn btn-outline-info col-3 offset-3" type="submit" > Connexion </button>
-                <button type="button" class="btn btn-outline-light" onclick="window.location = '{{ path('app_register') }}'">Inscription</button>
+                <button onclick="showLoader()" class="btn btn-outline-info col-3 offset-3" type="submit" > Connexion </button>
+                <A type="button" class="btn btn-outline-light" href='{{ path('app_register') }}'>Inscription</A>
             </form>
         </div>
+
     </div>
 </body>
 </html>

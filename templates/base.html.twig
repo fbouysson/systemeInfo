@@ -140,7 +140,7 @@
                 <i class="fa fa-cog"></i>
                 <span class="badge-sonar"></span>
             </a>#}
-            <a href="{{ path('app_logout') }}" style="width: 100%">
+            <a onclick="deco()" style="width: 100%; cursor : pointer">
                 <i class="fa fa-power-off"></i>
             </a>
         </div>
@@ -196,10 +196,18 @@
 </div>
 
 {% block js %}
-
     <script type="text/javascript" src="{{ asset('js/all.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/popper.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jQuery.min.js') }}"></script>
+    <script type="text/javascript">
+
+        var wsUrl = '{{ ws_url }}';
+        var username = '{{ username }}';
+        var channel = '-1';
+        var id = 'null';
+        var ws = new WebSocket('ws://' + wsUrl);
+    </script>
+    <script type="text/javascript" src="{{ asset('js/sf-websocket.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/fontawesome-iconpicker.min.js') }}"></script>
     <script>
@@ -248,6 +256,21 @@
             });
 
         });
+
+        function deco() {
+
+            {% for salon in salons %}
+                ws.send(
+                    JSON.stringify({
+                        action: 'exit',
+                        channel: '{{ salon.idSalon }}',
+                        user: username
+                    })
+                );
+            {% endfor %}
+
+            window.location = "{{ path('deconnexion') }}";
+        }
 
         function showLoader() {
             document.getElementById("loader").style.display = "block";

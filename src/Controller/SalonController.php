@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\AffectationSalon;
+use App\Entity\Logs;
 use App\Entity\Messages;
 use App\Entity\Salons;
 use App\Entity\UserUCO;
 use Doctrine\DBAL\DBALException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
@@ -22,6 +25,8 @@ class SalonController extends AbstractController
      * @param $id
      * @return Response
      * @throws DBALException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function index($id)
     {
@@ -34,7 +39,33 @@ class SalonController extends AbstractController
             $username = $user->getUsername();
             $messages = $em->getRepository(Messages::class)->findBy(["idSalon" => $id], array("idMessages" => "asc"));
 
-            $listeUser = $em->getRepository(UserUCO::class)->getAllUserInSalon($id);
+            $listeUserTmp = $em->getRepository(UserUCO::class)->getAllUserInSalon($id);
+
+            $listeUser = array();
+
+                for ($i = 0; $i < sizeof($listeUserTmp); $i++) {
+                    $ifIsCo = $this->getDoctrine()->getRepository(Logs::class)->findOneBy(["action" => $listeUserTmp[$i]["login_username"], "salon" => null], ["datetime" => "desc"]);
+                    dump($ifIsCo);
+
+                    $tmp["id_user"] = $listeUserTmp[$i]["id_user"];
+                    $tmp["login_username"] = $listeUserTmp[$i]["login_username"];
+
+                    if ($ifIsCo == [] || $ifIsCo == null || $ifIsCo->getStatut() == 1) {
+                        $tmp["statut"] = null;
+                    }else{
+                        $lg = $this->getDoctrine()->getRepository(Logs::class)->findOneBy(["action" => $listeUserTmp[$i]["login_username"], "salon" => $id], ["datetime" => "desc"]);
+                        if ($lg != null && $lg != []) {
+                            $lg = $lg->getStatut();
+
+                            $tmp["statut"] = $lg;
+                        } else {
+                            $tmp["statut"] = 1;
+                        }
+                    }
+
+                    $listeUser[] = $tmp;
+                }
+
             $listeUserOut = $em->getRepository(UserUCO::class)->getAllUserNotInSalon($id);
 
             $salonsId = $em->getRepository(AffectationSalon::class)->findBy(["idUser" => $user->getId()]);
@@ -47,12 +78,14 @@ class SalonController extends AbstractController
 
             $listSalon = substr($listSalon, 0, -1);
 
-            $salons = $em->getRepository(Salons::class)->findBy(["idSalon" => explode(",",$listSalon)]);
+            $salons = $em->getRepository(Salons::class)->findBy(["id" => explode(",",$listSalon)]);
             $salon = $em->getRepository(Salons::class)->find($id);
 
         }else{
             return $this->redirectToRoute('menu');
         }
+
+        $this->getDoctrine()->getRepository(Logs::class)->createLog($username,$id,0);
 
         return $this->render('salon/index.html.twig', [
             'controller_name' => 'SalonController',
@@ -218,6 +251,18 @@ class SalonController extends AbstractController
             $em->flush();
         }
 
+        return $this->json("ok",200);
+    }
+
+    /**
+     * @Route("/exitSalon", name="exitsalon")
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function exitSalon(Request $request){
+        $this->getDoctrine()->getRepository(Logs::class)->createLog($request->get("username"),$request->get("id"),1);
         return $this->json("ok",200);
     }
 

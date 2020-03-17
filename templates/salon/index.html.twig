@@ -60,10 +60,24 @@
                 {% for user in listeUserInSalon %}
                     <li class="list-group-item">
                         {{ user.login_username }}
+                        <span id="statut_{{ user.login_username }}" style="font-size: 10px">
+                            {% if user.statut is not empty %}
+                                {% if user.statut == 0 %}
+                                    <i class="fa fa-circle" style="color: greenyellow"></i>
+                                    <span style="color: greenyellow">Connecté</span>
+                                {% else %}
+                                    <i class="fa fa-circle" style="color: orange"></i>
+                                    <span style="color: orange">Absent</span>
+                                {% endif %}
+                            {% else %}
+                                <i class="fa fa-circle" style="color: red"></i>
+                                <span style="color: red">Déconnecté</span>
+                            {% endif %}
+                        </span>
                         {% if salon.idCreateurSalon == id %}
                             {% if user.id_user != salon.idCreateurSalon %}
-                                <button class="btn btn-outline-danger" onclick="delUser({{ user.id_user }})"
-                                        style="float: right"><i class="far fa-trash-alt"></i></button>
+                                <button class="btn btn-outline-danger"  onclick="delUser({{ user.id_user }})"
+                                        style="float: right; border: none"><i class="far fa-trash-alt"></i></button>
                             {% endif %}
 
                         {% else %}
@@ -129,20 +143,32 @@
             div.scrollTop = div.scrollHeight;
         });
 
-        var wsUrl = '{{ ws_url }}';
-        var username = '{{ username }}';
-        var channel = '{{ idSalon }}';
-        var id = '{{ id }}';
-        var ws = new WebSocket('ws://' + wsUrl);
+        username = '{{ username }}';
+        channel = '{{ idSalon }}';
+        id = '{{ id }}';
     </script>
     <script type="text/javascript" src="{{ asset('js/sf-websocket.js') }}"></script>
     <script type="text/javascript">
         window.addEventListener("beforeunload", function (event) {
-            ws.send(JSON.stringify({
-                action: 'unsubscribe',
-                channel: channel,
-                user: username
-            }));
+            $.ajax({
+                url: '{{ path('exitsalon') }}',
+                type: 'POST',
+                data: {
+                    username: username,
+                    id: channel
+                },
+                dataType: 'json',
+                success: function () {
+                    ws.send(
+                        JSON.stringify({
+                            action: 'unsubscribe',
+                            channel: channel,
+                            user: username
+                        })
+                    );
+                    return;
+                }
+            });
         });
 
         // Get the input field
@@ -175,46 +201,48 @@
                         img = new Image();
                         let objectUrl = _URL.createObjectURL(file);
                         img.onload = function () {
+
                             width = this.width;
                             height = this.height;
                             _URL.revokeObjectURL(objectUrl);
+
+                            if(width <= 1024 && height <= 1024) {
+
+                                let formData = new FormData();
+
+                                formData.append('file', file);
+
+                                let Route = '{{ path('send_img', {"salon": idSalon}) }}';
+                                $.ajax({
+                                    url: Route,
+                                    type: 'POST',
+                                    data: formData,
+                                    dataType: 'json',
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (data) {
+
+                                        ws.send(JSON.stringify({
+                                            action: 'img',
+                                            user: username,
+                                            message: "",
+                                            img: data,
+                                            channel: channel,
+                                            id: id,
+                                        }));
+
+                                        removeImg();
+                                    }
+                                })
+                            }else{
+                                alert("Image trop volumineuse");
+                            }
+
                         };
                         img.src = objectUrl;
                     }
 
-                    if(width <= 1024 && height <= 1024) {
-
-                        let formData = new FormData();
-
-                        formData.append('file', file);
-
-                        let Route = '{{ path('send_img', {"salon": idSalon}) }}';
-                        $.ajax({
-                             url: Route,
-                             type: 'POST',
-                             data: formData,
-                             dataType: 'json',
-                             contentType: false,
-                             processData: false,
-                             success: function (data) {
-                                 console.log(data);
-
-                                 ws.send(JSON.stringify({
-                                     action: 'img',
-                                     user: username,
-                                     message: "",
-                                     img: data,
-                                     channel: channel,
-                                     id: id,
-                                 }));
-
-                                 removeImg();
-                             }
-                         })
-                    }else{
-                        alert("Image trop volumineuse");
-                    }
-                } else if (inputImg.size > 1024) {
+                } else{
                     alert("Le fichier doit être une image !")
                 }
             }

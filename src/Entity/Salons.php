@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,11 +17,11 @@ class Salons
     /**
      * @var int
      *
+     * @ORM\Id()
      * @ORM\Column(name="id_salon", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idSalon;
+    private $id;
 
     /**
      * @var string
@@ -42,9 +44,14 @@ class Salons
      */
     private $iconSalon = '';
 
+    public function __construct()
+    {
+        $this->logs = new ArrayCollection();
+    }
+
     public function getIdSalon(): ?int
     {
-        return $this->idSalon;
+        return $this->id;
     }
 
     public function getNameSalon(): ?string

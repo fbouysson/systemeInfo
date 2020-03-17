@@ -78,17 +78,25 @@
     confirm_password.onkeyup = validatePassword;
 
     function validatePassword() {
-        if (password.value.length < 6) {
-            password.setCustomValidity("Le mot de passe doit faire 6 caractères minimum");
-            return false
-        } else {
-            password.setCustomValidity('');
-            if (password.value !== confirm_password.value) {
-                confirm_password.setCustomValidity("Les mots de passe ne corresponde pas");
-                return false;
+        let regex = new RegExp(/^(?=.*[A-z])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\W+)\S{6,}$/);
+
+            if (password.value.length < 6) {
+                password.setCustomValidity("Le mot de passe doit faire 6 caractères minimum");
+                return false
             } else {
-                confirm_password.setCustomValidity('');
-                return true;
+                if(regex.test(password.value)) {
+                    password.setCustomValidity('');
+                }
+                else{
+                        alert("Le mot de passe doit au moin contenir une majuscule, une miniscule, un chiffre, un symbole et avoir au moins 6 caractères !");
+                    }
+                if (password.value !== confirm_password.value) {
+                    confirm_password.setCustomValidity("Les mots de passe ne corresponde pas");
+                    return false;
+                } else {
+                    confirm_password.setCustomValidity('');
+                    return true;
+                }
             }
         }
     }

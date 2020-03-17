@@ -66,7 +66,7 @@ class UCOAuthenticator extends AbstractFormLoginAuthenticator
 
         $user = $this->entityManager->getRepository(UserUCO::class)->findOneBy(['username' => $credentials['username']]);
 
-        if (!$user) {
+        if ($user = null) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Nom d\'utilisateur inconnu.');
         }
@@ -102,7 +102,7 @@ class UCOAuthenticator extends AbstractFormLoginAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        $this->entityManager->getRepository(Logs::class)->createLog($request->request->get('username'),null,0);
+        $this->entityManager->getRepository(Logs::class)->createLog($token->getUsername(),null,0);
         return new RedirectResponse($this->urlGenerator->generate('menu'));
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
     }

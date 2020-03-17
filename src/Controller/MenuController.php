@@ -20,6 +20,7 @@ class MenuController extends AbstractController
 
         $user = $this->getUser();
         $username = $user->getUsername();
+
         $messages = $em->getRepository(Messages::class)->findBy(["idSalon" => 1],array("idMessages" => "asc"));
 
         $salonsId = $em->getRepository(AffectationSalon::class)->findBy(["idUser" => $user->getId()]);
@@ -31,7 +32,7 @@ class MenuController extends AbstractController
 
         $listSalon = substr($listSalon, 0, -1);
 
-        $salons = $em->getRepository(Salons::class)->findBy(["idSalon" => explode(",",$listSalon)]);
+        $salons = $em->getRepository(Salons::class)->findBy(["id" => explode(",",$listSalon)]);
 
         return $this->render('menu/index.html.twig', [
             'controller_name' => 'MenuController',
@@ -40,6 +41,8 @@ class MenuController extends AbstractController
             'username' => $username,
             'salons' => $salons,
             'messages' => $messages,
+            'ws_url' => '127.0.0.1:8080',
+
         ]);
     }
 

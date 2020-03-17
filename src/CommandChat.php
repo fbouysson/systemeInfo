@@ -24,6 +24,8 @@ class CommandChat extends Command
         $server = IoServer::factory(
             new HttpServer(new WsServer(new Chat())),
             8080,
+            //'192.168.43.80'
+            /*8080,*/
             '127.0.0.1'
         );
         $server->run();

@@ -7,6 +7,7 @@ use App\Entity\Logs;
 use App\Entity\Messages;
 use App\Entity\Salons;
 use App\Entity\UserUCO;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -23,19 +24,20 @@ class SalonController extends AbstractController
     /**
      * @Route("/salon/{id}", name="salon")
      * @param $id
+     * @param Connection $connection
      * @return Response
      * @throws DBALException
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function index($id)
+    public function index($id, Connection $connection)
     {
         $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
         $user = $this->getUser();
 
         $ifInSalon = $em->getRepository(AffectationSalon::class)->findOneBy(["idUser" => $user->getId(), "idSalon" => $id]);
 
-        if($ifInSalon != []) {
+        if ($ifInSalon != []) {
             $username = $user->getUsername();
             $messages = $em->getRepository(Messages::class)->findBy(["idSalon" => $id], array("idMessages" => "asc"));
 
@@ -43,28 +45,27 @@ class SalonController extends AbstractController
 
             $listeUser = array();
 
-                for ($i = 0; $i < sizeof($listeUserTmp); $i++) {
-                    $ifIsCo = $this->getDoctrine()->getRepository(Logs::class)->findOneBy(["action" => $listeUserTmp[$i]["login_username"], "salon" => null], ["datetime" => "desc"]);
-                    dump($ifIsCo);
+            for ($i = 0; $i < sizeof($listeUserTmp); $i++) {
+                $ifIsCo = $this->getDoctrine()->getRepository(Logs::class)->findOneBy(["action" => $listeUserTmp[$i]["username"], "salon" => null], ["datetime" => "desc"]);
 
-                    $tmp["id_user"] = $listeUserTmp[$i]["id_user"];
-                    $tmp["login_username"] = $listeUserTmp[$i]["login_username"];
+                $tmp["id_user"] = $listeUserTmp[$i]["id"];
+                $tmp["login_username"] = $listeUserTmp[$i]["username"];
 
-                    if ($ifIsCo == [] || $ifIsCo == null || $ifIsCo->getStatut() == 1) {
-                        $tmp["statut"] = null;
-                    }else{
-                        $lg = $this->getDoctrine()->getRepository(Logs::class)->findOneBy(["action" => $listeUserTmp[$i]["login_username"], "salon" => $id], ["datetime" => "desc"]);
-                        if ($lg != null && $lg != []) {
-                            $lg = $lg->getStatut();
+                if ($ifIsCo == [] || $ifIsCo == null || $ifIsCo->getStatut() == 1) {
+                    $tmp["statut"] = null;
+                } else {
+                    $lg = $this->getDoctrine()->getRepository(Logs::class)->findOneBy(["action" => $listeUserTmp[$i]["username"], "salon" => $id], ["datetime" => "desc"]);
+                    if ($lg != null && $lg != []) {
+                        $lg = $lg->getStatut();
 
-                            $tmp["statut"] = $lg;
-                        } else {
-                            $tmp["statut"] = 1;
-                        }
+                        $tmp["statut"] = $lg;
+                    } else {
+                        $tmp["statut"] = 1;
                     }
-
-                    $listeUser[] = $tmp;
                 }
+
+                $listeUser[] = $tmp;
+            }
 
             $listeUserOut = $em->getRepository(UserUCO::class)->getAllUserNotInSalon($id);
 
@@ -78,14 +79,15 @@ class SalonController extends AbstractController
 
             $listSalon = substr($listSalon, 0, -1);
 
-            $salons = $em->getRepository(Salons::class)->findBy(["id" => explode(",",$listSalon)]);
+            $salons = $em->getRepository(Salons::class)->findBy(["id" => explode(",", $listSalon)]);
             $salon = $em->getRepository(Salons::class)->find($id);
 
-        }else{
+        } else {
             return $this->redirectToRoute('menu');
         }
 
-        $this->getDoctrine()->getRepository(Logs::class)->createLog($username,$id,0);
+        $lastMessage = $this->getDoctrine()->getRepository(UserUCO::class)->getLastMessageSeen($id,$username);
+        $this->getDoctrine()->getRepository(Logs::class)->createLog($username, $id, 0);
 
         return $this->render('salon/index.html.twig', [
             'controller_name' => 'SalonController',
@@ -98,6 +100,7 @@ class SalonController extends AbstractController
             'listeUserInSalon' => $listeUser,
             'listeUserNotInSalon' => $listeUserOut,
             'salon' => $salon,
+            'lastMessage' => $lastMessage,
             'ws_url' => '127.0.0.1:8080',
         ]);
     }
@@ -106,6 +109,7 @@ class SalonController extends AbstractController
      * @Route("/sendMsg", name="send_msg")
      * @param Request $request
      * @return JsonResponse
+     * @throws \Exception
      */
     public function sendMsg(Request $request)
     {
@@ -129,7 +133,7 @@ class SalonController extends AbstractController
 
         $result = array("Username" => $username, "msg" => $msg);
 
-        return $this->json($result,200);
+        return $this->json($result, 200);
     }
 
     /**
@@ -138,17 +142,18 @@ class SalonController extends AbstractController
      * @param $salon
      * @return JsonResponse
      */
-    public function addImg(Request $request, $salon){
+    public function addImg(Request $request, $salon)
+    {
         $img = new File($request->files->get("file"));
 
         $filesystem = new Filesystem();
 
-        if(!$filesystem->exists("Uploads/img".$salon)){
-            $filesystem->mkdir("Uploads/img".$salon, 0777);
+        if (!$filesystem->exists("Uploads/img" . $salon)) {
+            $filesystem->mkdir("Uploads/img" . $salon, 0777);
         }
 
-        $filename = time().".jpeg";
-        $img->move("Uploads/img".$salon,$filename);
+        $filename = time() . ".jpeg";
+        $img->move("Uploads/img" . $salon, $filename);
 
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
@@ -165,7 +170,7 @@ class SalonController extends AbstractController
         $em->persist($message);
         $em->flush();
 
-        return $this->json($filename,200);
+        return $this->json($filename, 200);
     }
 
 
@@ -174,7 +179,8 @@ class SalonController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function addUser(Request $request){
+    public function addUser(Request $request)
+    {
         $idSalon = $request->get("idSalon");
         $idUser = $request->get("idUser");
 
@@ -186,7 +192,7 @@ class SalonController extends AbstractController
         $em->persist($aff);
         $em->flush();
 
-        return $this->json("ok",200);
+        return $this->json("ok", 200);
     }
 
     /**
@@ -194,7 +200,8 @@ class SalonController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function delUser(Request $request){
+    public function delUser(Request $request)
+    {
         $idSalon = $request->get("idSalon");
         $idUser = $request->get("idUser");
 
@@ -204,7 +211,7 @@ class SalonController extends AbstractController
         $em->remove($aff);
         $em->flush();
 
-        return $this->json("ok",200);
+        return $this->json("ok", 200);
     }
 
     /**
@@ -212,7 +219,8 @@ class SalonController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function addSalon(Request $request){
+    public function addSalon(Request $request)
+    {
         $nomSalon = $request->get("nomSalon");
         $icon = $request->get("icon");
 
@@ -232,7 +240,7 @@ class SalonController extends AbstractController
         $em->persist($aff);
         $em->flush();
 
-        return $this->json($salon->getIdSalon(),200);
+        return $this->json($salon->getIdSalon(), 200);
     }
 
     /**
@@ -240,18 +248,19 @@ class SalonController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function delSalon(Request $request){
+    public function delSalon(Request $request)
+    {
         $idSalon = $request->get("idSalon");
 
         $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
 
         $affs = $em->getRepository(AffectationSalon::class)->findBy(["idSalon" => $idSalon]);
-        foreach ($affs as $aff){
+        foreach ($affs as $aff) {
             $em->remove($aff);
             $em->flush();
         }
 
-        return $this->json("ok",200);
+        return $this->json("ok", 200);
     }
 
     /**
@@ -261,9 +270,10 @@ class SalonController extends AbstractController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function exitSalon(Request $request){
-        $this->getDoctrine()->getRepository(Logs::class)->createLog($request->get("username"),$request->get("id"),1);
-        return $this->json("ok",200);
+    public function exitSalon(Request $request)
+    {
+        $this->getDoctrine()->getRepository(Logs::class)->createLog($request->get("username"), $request->get("id"), 1);
+        return $this->json("ok", 200);
     }
 
 }

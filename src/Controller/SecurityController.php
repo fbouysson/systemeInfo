@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Logs;
+use App\Entity\UserUCO;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Exception;
@@ -22,6 +23,7 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+
         if ($this->getUser()) {
             $this->getDoctrine()->getRepository(Logs::class)->createLog($this->getUser()->getUsername(),null,0);
             return $this->redirectToRoute('menu');
@@ -32,9 +34,6 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        dump($lastUsername);
-        dump($error);
-        dump($authenticationUtils);
         return $this->render('security/login.html.twig',
             [
                 'last_username' => $lastUsername,
@@ -60,8 +59,7 @@ class SecurityController extends AbstractController
     public function logout()
     {
 
-        $this->getDoctrine()->getRepository(Logs::class)->createLog($this->getUser()->getUsername(),null,1);
-
+        //$this->getDoctrine()->getRepository(Logs::class)->createLog($this->getUser()->getUsername(),null,1);
 
         return $this->redirectToRoute("app_login");
     }

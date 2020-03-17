@@ -2,12 +2,14 @@ security:
     encoders:
         App\Entity\UserUCO:
             algorithm: auto
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         app_user_provider:
             entity:
                 class: App\Entity\UserUCO
                 property: username
+        # used to reload user from session & other features (e.g. switch_user)
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -17,6 +19,7 @@ security:
             guard:
                 authenticators:
                     - App\Security\UCOAuthenticator
+                entry_point: App\Security\UCOAuthenticator
             logout:
                 path: app_logout
                 # where to redirect after logout
@@ -33,8 +36,8 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/inscription, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/menu, roles: ROLE_USER }
-        - { path: ^/salon, roles: ROLE_USER }
-        - { path: ^/sendmsg, roles: ROLE_USER }
+        # - { path: ^/inscription, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/menu, roles: ROLE_USER }
+        # - { path: ^/salon, roles: ROLE_USER }
+        # - { path: ^/sendmsg, roles: ROLE_USER }

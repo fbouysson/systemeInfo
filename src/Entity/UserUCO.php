@@ -8,57 +8,40 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * User
  *
- * @ORM\Table(name="UserUCO")
  * @ORM\Entity(repositoryClass="App\Repository\UserUCORepository")
- * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
 class UserUCO implements UserInterface
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @ORM\Column(name="id_user", type="integer", nullable=false)
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="user_nom", type="string", length=45, nullable=true)
-     */
-    private $userNom;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="user_prenom", type="string", length=45, nullable=true)
-     */
-    private $userPrenom;
-
-    /**
-     * @ORM\Column(name="login_username", type="string", length=180, nullable=false, unique=true)
+     * @ORM\Column(type="string", length=180, nullable=false, unique=true)
      */
     private $username;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="user_email", type="string", length=45, nullable=true, unique=true)
+     * @ORM\Column(type="string", length=45, nullable=false, unique=true)
      */
     private $userEmail;
 
     /**
      * @var DateTime
      *
-     * @ORM\Column(name="user_date_arrivee", type="datetime",length=10, nullable=false)
+     * @ORM\Column(type="datetime",length=10, nullable=false)
      */
 
     private $userDateArrivee;
 
     /**
-     * @ORM\Column(name="roles" ,type="json")
+     * @ORM\Column(type="json")
      */
     private $roles = [];
 
@@ -69,7 +52,7 @@ class UserUCO implements UserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(name="login_password", type="string",type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=false)
      */
     private $password;
 
@@ -146,30 +129,6 @@ class UserUCO implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getUserNom(): ?string
-    {
-        return $this->userNom;
-    }
-
-    public function setUserNom(?string $userNom): self
-    {
-        $this->userNom = $userNom;
-
-        return $this;
-    }
-
-    public function getUserPrenom(): ?string
-    {
-        return $this->userPrenom;
-    }
-
-    public function setUserPrenom(?string $userPrenom): self
-    {
-        $this->userPrenom = $userPrenom;
-
-        return $this;
-    }
-
     public function getUserEmail(): ?string
     {
         return $this->userEmail;
@@ -182,7 +141,7 @@ class UserUCO implements UserInterface
         return $this;
     }
 
-    public function getUserDateArrivee(): ?DateTime
+    public function getUserDateArrivee(): DateTime
     {
         return $this->userDateArrivee;
     }

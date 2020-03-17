@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\AffectationSalon;
 use App\Entity\Messages;
 use App\Entity\Salons;
-use App\Entity\UserUCO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 

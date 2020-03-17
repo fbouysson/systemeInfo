@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -55,6 +56,22 @@ class Messages
      * @ORM\Column(name="type", type="string", length=3, nullable=false)
      */
     private $type;
+
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=false)
+     */
+    private $date;
+
+    /**
+     * Messages constructor.
+     * @throws \Exception
+     */
+    public function __construct()
+    {
+        $this->date = new DateTime();
+    }
 
     public function getIdMessages(): ?int
     {
@@ -121,5 +138,19 @@ class Messages
         return $this;
     }
 
+    /**
+     * @return DateTime
+     */
+    public function getDate(): DateTime
+    {
+        return $this->date;
+    }
 
+    /**
+     * @param DateTime $date
+     */
+    public function setDate(DateTime $date): void
+    {
+        $this->date = $date;
+    }
 }

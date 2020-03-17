@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
@@ -57,6 +59,11 @@ class UCOAuthenticator extends AbstractFormLoginAuthenticator
         return $credentials;
     }
 
+    /**
+     * @param mixed $credentials
+     * @param UserProviderInterface $userProvider
+     * @return UserUCO|object|UserInterface|null
+     */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
@@ -66,9 +73,12 @@ class UCOAuthenticator extends AbstractFormLoginAuthenticator
 
         $user = $this->entityManager->getRepository(UserUCO::class)->findOneBy(['username' => $credentials['username']]);
 
-        if ($user = null) {
+        dump($credentials);
+        dump($userProvider);
+
+        if ($user == null) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Nom d\'utilisateur inconnu.');
+            throw new CustomUserMessageAuthenticationException('Nom d\'utilisateur ou mot de passe incorrecte.');
         }
 
         return $user;

@@ -37,12 +37,12 @@
                     </div>
                 {% endif %}#}
 
-                <label for="username" style="font-weight: bold;">Nom d'utilisateur :</label>
-                <input type="text" value="{{ last_username }}" name="username" id="username"
+                <label for="inputUsername" style="font-weight: bold;">Nom d'utilisateur :</label>
+                <input type="text" value="{{ last_username }}" name="username" id="inputUsername"
                        class="form-control styl" required autofocus>
                 <br>
                 <label for="inputPassword" style="font-weight: bold;">Mot de passe :</label>
-                <input type="password" name="inputPassword" id="inputPassword" class="form-control styl" required>
+                <input type="password" name="password" id="inputPassword" class="form-control styl" required>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                 {#

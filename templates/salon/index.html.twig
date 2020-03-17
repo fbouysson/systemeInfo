@@ -12,15 +12,19 @@
             <strong>{{ salon.nameSalon }} : </strong>
         </div>
         <div id="divStatut">Connection...</div>
+
+        {% if lastMessage is not empty %}
+            <button onclick="toMessage('{{ lastMessage }}')" class="btn btn-sm btn-outline-secondary"> Afficher les message manqué ! </button>
+        {% endif %}
     </div>
     <div class="divMessage" id="divMessage">
         {% for message in messages %}
             {% if message.type == "msg" %}
-                <div {% if message.idUser == id %} class="bubbleRight" {% else %} class="bubbleLeft"{% endif %}>
+                <div {% if message.idUser == id %} class="bubbleRight" {% else %} class="bubbleLeft"{% endif %} id="{{ message.idMessages }}">
                     <span>{{ message.message }}</span>
                 </div>
             {% else %}
-                <div {% if message.idUser == id %} class="bubbleRight" {% else %} class="bubbleLeft"{% endif %}>
+                <div {% if message.idUser == id %} class="bubbleRight" {% else %} class="bubbleLeft"{% endif %} id="{{ message.idMessages }}">
                     <img {% if message.idUser == id %} class="imgChatRight" {% else %} class="imgChatLeft"{% endif %}
                             alt="{{ message.message }}" src="{{ asset('Uploads/img'~idSalon~"/"~message.message) }}">
                 </div>
@@ -96,7 +100,7 @@
                 <select class="custom-select col-7 offset-1" id="selectAddUser" style="cursor: pointer">
                     <option value="" selected style="cursor: pointer">Ajouter</option>
                     {% for user in listeUserNotInSalon %}
-                        <option value="{{ user.id_user }}" style="cursor: pointer">{{ user.login_username }}</option>
+                        <option value="{{ user.id }}" style="cursor: pointer">{{ user.username }}</option>
                     {% endfor %}
                 </select>
                 <button class="btn btn-info col-2 offset-1" onclick="addUser()" style="display: inline-block"><i
@@ -350,6 +354,10 @@
                     window.location = '{{ path('menu') }}';
                 }
             });
+        }
+
+        function toMessage(idMessage) {
+            document.getElementById(idMessage).scrollIntoView();
         }
     </script>
 {% endblock %}

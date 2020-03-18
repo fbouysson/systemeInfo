@@ -25,6 +25,29 @@
 
 {% block javascripts %}
     <script type="text/javascript">
+        $(document).ready(function (){
+           let sendWelcomeVal = "{{ sendWelcome }}";
 
+           if(sendWelcomeVal !== "")
+               setTimeout(sendWelcome, 500);
+        });
+
+        function exitSalon(){
+
+        }
+
+        function sendWelcome() {
+            let listeSalons = '{{ tabSalonId | join(',') }}'.split(",");
+
+            for(let i = 0; i < listeSalons.length; i++){
+                ws.send(
+                    JSON.stringify({
+                        action: 'welcome',
+                        channel: listeSalons[i],
+                        user: username
+                    })
+                );
+            }
+        }
     </script>
 {% endblock %}

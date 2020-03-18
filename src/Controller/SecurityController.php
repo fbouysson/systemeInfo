@@ -7,10 +7,13 @@ use App\Entity\UserUCO;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Exception;
+use Ratchet\ConnectionInterface;
+use Ratchet\WebSocket\WsConnection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use App\Chat;
 
 class SecurityController extends AbstractController
 {

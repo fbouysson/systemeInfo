@@ -153,7 +153,8 @@
     </script>
     <script type="text/javascript" src="{{ asset('js/sf-websocket.js') }}"></script>
     <script type="text/javascript">
-        window.addEventListener("beforeunload", function (event) {
+
+        function exitSalon(){
             $.ajax({
                 url: '{{ path('exitsalon') }}',
                 type: 'POST',
@@ -173,7 +174,7 @@
                     return;
                 }
             });
-        });
+        }
 
         // Get the input field
         let input = document.getElementById("inputMsg");

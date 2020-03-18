@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\AffectationSalon;
+use App\Entity\Logs;
 use App\Entity\Messages;
 use App\Entity\Salons;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -33,13 +35,29 @@ class MenuController extends AbstractController
 
         $salons = $em->getRepository(Salons::class)->findBy(["id" => explode(",",$listSalon)]);
 
+        $tabSalonId = array();
+        foreach ($salons as $sal ){
+            $tabSalonId[] = $sal->getIdSalon();
+        }
+
+        $log = $em->getRepository(Logs::class)->findOneBy(['salon' => null , "action" => $username, "statut" => 0], ["datetime" => "desc"]);
+        $dateLog = $log->getDatetime();
+        $now = new DateTime();
+
+        $sendWelcome = false;
+        if($dateLog->diff($now)->s <= 3){
+            $sendWelcome = true;
+        }
+
         return $this->render('menu/index.html.twig', [
             'controller_name' => 'MenuController',
             'user' => $user,
             'id' => $user->getId(),
             'username' => $username,
             'salons' => $salons,
+            'tabSalonId' => $tabSalonId,
             'messages' => $messages,
+            'sendWelcome' => $sendWelcome,
             'ws_url' => '127.0.0.1:8080',
 
         ]);

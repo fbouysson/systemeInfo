@@ -6,6 +6,7 @@
     let addMessageToChannel = function(message) {
         let data = $.parseJSON(message);
         if(data["channel"] == channel && ((data["message"] != "" && data["message"] != undefined) || data["img"] != null)) {
+
             let msgId = data["id"];
             let classe1;
             let classe2;
@@ -14,10 +15,12 @@
             if(msgId === 0){
                 classe1 = "info";
                 classe2 = "infoBot";
-            } else if (msgId === id) {
+            }
+            else if (msgId === id) {
                 classe1 = "bubbleRight";
                 classe2 = "slide-left";
-            } else {
+            }
+            else {
                 classe1 = "bubbleLeft";
                 classe2 = "slide-right";
                 classeSmall1 = "bubbleLeftSmall";
@@ -111,10 +114,10 @@
                         }
                     }
             }else if(data["action"] === "welcome")
-                document.getElementById(`statut_${data["user"]}`).innerHTML = `<i class="fa fa-circle" style="color: orange"></i>
+                document.getElementById(`statut_${data["message"]}`).innerHTML = `<i class="fa fa-circle" style="color: orange"></i>
                             <span style="color: orange">Absent</span>`;
             else if(data["action"] === "exit"){
-                document.getElementById(`statut_${data["user"]}`).innerHTML = `<i class="fa fa-circle" style="color: red"></i>
+                document.getElementById(`statut_${data["message"]}`).innerHTML = `<i class="fa fa-circle" style="color: red"></i>
                             <span style="color: red">Déconnecté</span>`;
             }
             if (_receiver != null)

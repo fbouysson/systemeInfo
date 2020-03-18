@@ -89,6 +89,11 @@ class SalonController extends AbstractController
         $lastMessage = $this->getDoctrine()->getRepository(UserUCO::class)->getLastMessageSeen($id,$username);
         $this->getDoctrine()->getRepository(Logs::class)->createLog($username, $id, 0);
 
+        $tabSalonId = array();
+        foreach ($salons as $sal ){
+            $tabSalonId[] = $sal->getIdSalon();
+        }
+
         return $this->render('salon/index.html.twig', [
             'controller_name' => 'SalonController',
             'user' => $user,
@@ -100,6 +105,7 @@ class SalonController extends AbstractController
             'listeUserInSalon' => $listeUser,
             'listeUserNotInSalon' => $listeUserOut,
             'salon' => $salon,
+            'tabSalonId' => $tabSalonId,
             'lastMessage' => $lastMessage,
             'ws_url' => '127.0.0.1:8080',
         ]);

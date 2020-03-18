@@ -30,12 +30,14 @@ class UCOAuthenticator extends AbstractFormLoginAuthenticator
     private $entityManager;
     private $urlGenerator;
     private $csrfTokenManager;
+    private $passwordEncoded;
 
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager)
+    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $encoder)
     {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
+        $this->passwordEncoded = $encoder;
     }
 
     public function supports(Request $request)
@@ -72,13 +74,15 @@ class UCOAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         $user = $this->entityManager->getRepository(UserUCO::class)->findOneBy(['username' => $credentials['username']]);
-
-        dump($credentials);
-        dump($userProvider);
+        $checkPwd = $this->passwordEncoded->isPasswordValid($user,$credentials['password']);
 
         if ($user == null) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Nom d\'utilisateur ou mot de passe incorrecte.');
+            throw new CustomUserMessageAuthenticationException('Nom d\'utilisateur inconnu.');
+        }
+
+        if(!$checkPwd){
+            throw new CustomUserMessageAuthenticationException('Mot de passe incorrecte.');
         }
 
         return $user;

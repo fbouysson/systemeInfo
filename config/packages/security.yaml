@@ -1,7 +1,7 @@
 security:
     encoders:
         App\Entity\UserUCO:
-            algorithm: auto
+            algorithm: bcrypt
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:

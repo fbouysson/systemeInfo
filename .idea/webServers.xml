@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="1508eb2d-a0e3-4c3e-8b85-4af1b99e1844" name="uco-online.fr" url="http://access820607021.webspace-data.io">
+        <fileTransfer host="access820607021.webspace-data.io" port="22" rootFolder="/UCO" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

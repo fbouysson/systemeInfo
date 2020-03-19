@@ -14,7 +14,7 @@
         <div id="divStatut">Connection...</div>
 
         {% if lastMessage is not empty %}
-            <button onclick="toMessage('{{ lastMessage }}')" class="btn btn-sm btn-outline-secondary"> Afficher les message manqué ! </button>
+            <button onclick="toMessage('{{ lastMessage }}')" class="btn btn-sm btn-outline-secondary" style="margin-left: 43%; margin-bottom: 5px;"> Afficher les message manqué ! </button>
         {% endif %}
     </div>
     <div class="divMessage" id="divMessage">
@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    <div class="inputListeUser card" style="margin-top: -10px;">
+    <div class="inputListeUser card" style="margin-top: 5px;">
         <div>
             <h4>Utilisateur présent : </h4>
             <ul class="list-group">
@@ -358,7 +358,12 @@
         }
 
         function toMessage(idMessage) {
-            document.getElementById(idMessage).scrollIntoView();
+            if(idMessage === 0) {
+                let div = document.getElementById("divMessage");
+                div.scrollTo(0,0);
+            }
+            else document.getElementById(idMessage).scrollIntoView();
+
         }
     </script>
 {% endblock %}

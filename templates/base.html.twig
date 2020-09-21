@@ -89,7 +89,7 @@
                         <div class="sidebar-submenu">
                             <ul>
                                 {% for salon in salons %}
-                                    <li class="liSalon" onclick="exitSalon(); window.location = '{{ path('salon',{ id : salon.idSalon}) }}'" style="color: white; cursor: pointer"><i class="{{ salon.iconSalon }}"></i>{{ salon.nameSalon }}</li>
+                                    <li class="liSalon" onclick="exitSalon(); window.location = '{{ path('salon',{ id : salon.idSalon}) }}'" style="color: white; cursor: pointer"><i class="{{ salon.iconSalon }}"></i> {{ salon.nameSalon }}</li>
                                 {% endfor %}
                             </ul>
                         </div>
@@ -194,7 +194,7 @@
         var username = '{{ username }}';
         var channel = '-1';
         var id = 'null';
-        var ws = new WebSocket('ws://uco.corp.uco.com:8080');
+        var ws = new WebSocket('ws://78.117.166.93:82');
     </script>
     <script type="text/javascript" src="{{ asset('js/sf-websocket.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>

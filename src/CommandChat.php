@@ -23,10 +23,10 @@ class CommandChat extends Command
         echo "Lancement ...\n";
         $server = IoServer::factory(
             new HttpServer(new WsServer(new Chat())),
-            8080,
+            82,
             //'192.168.43.80'
             /*8080,*/
-            'uco.corp.uco.com'
+            '192.168.1.36'
         );
         $server->run();
         echo "ok\n";

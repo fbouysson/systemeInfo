@@ -1,6 +1,7 @@
 {% extends asset('base.html.twig') %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/emojis.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/salon.css') }}"/>
 {% endblock %}
 
@@ -36,8 +37,12 @@
             {% endif %}
         {% endfor %}
     </div>
-
+    <div id="emojis" class="divEmoji">
+    </div>
     <div class="input-group divInputImg">
+        <button class="btn btn-outline-secondary btnEmoji" onclick="gestionEmoji()">
+            <img draggable="false" class="" alt="😀" src="https://twemoji.maxcdn.com/v/13.0.1/72x72/1f600.png">
+        </button>
         <button class="btn btn-outline-secondary btnImg" onclick="document.getElementById('inputImg').click()"
                 id="btnImg"><i class="fas fa-plus"></i> <i class="far fa-image"></i></button>
         <input id="inputImg" type="file" style="display: none" accept="image/*" onchange="addImg(this)">
@@ -136,15 +141,16 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
 
 
 {% block javascripts %}
     <script type="text/javascript">
-
         $(document).ready(function () {
             let div = document.getElementById("divMessage");
             div.scrollTop = div.scrollHeight;
+
         });
 
         username = '{{ username }}';
@@ -152,7 +158,40 @@
         id = '{{ id }}';
     </script>
     <script type="text/javascript" src="{{ asset('js/sf-websocket.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/twemoji.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/DisMojiPicker.js') }}"></script>
     <script type="text/javascript">
+        let divEmojiIsOpen = false;
+
+        $(document).ready(function () {
+            $("#emojis").disMojiPicker();
+            twemoji.parse(document.body);
+            $("#emojis").picker(
+                emoji => console.log(emoji)
+            );
+
+            $("#inputMsg").on("click",function () {
+                let div = document.getElementById("emojis");
+                div.style.display = 'none';
+                divEmojiIsOpen = false;
+            });
+
+            $(".emoji").on("click",function () {
+                console.log(this);
+                document.getElementById("inputMsg").value += this.alt;
+            });
+        });
+
+        function gestionEmoji() {
+            let div = document.getElementById("emojis");
+            if(divEmojiIsOpen){
+                div.style.display = 'none';
+                divEmojiIsOpen = false;
+            }else{
+                div.style.display = 'block';
+                divEmojiIsOpen = true;
+            }
+        }
 
         function exitSalon(){
             $.ajax({

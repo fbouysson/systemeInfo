@@ -26,7 +26,7 @@ class CommandChat extends Command
             8080,
             //'192.168.43.80'
             /*8080,*/
-            '127.0.0.1'
+            'uco.corp.uco.com'
         );
         $server->run();
         echo "ok\n";

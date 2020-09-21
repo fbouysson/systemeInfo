@@ -58,7 +58,6 @@ class MenuController extends AbstractController
             'tabSalonId' => $tabSalonId,
             'messages' => $messages,
             'sendWelcome' => $sendWelcome,
-            'ws_url' => '127.0.0.1:8080',
 
         ]);
     }

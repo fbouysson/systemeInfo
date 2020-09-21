@@ -107,7 +107,6 @@ class SalonController extends AbstractController
             'salon' => $salon,
             'tabSalonId' => $tabSalonId,
             'lastMessage' => $lastMessage,
-            'ws_url' => '127.0.0.1:8080',
         ]);
     }
 
@@ -147,6 +146,7 @@ class SalonController extends AbstractController
      * @param Request $request
      * @param $salon
      * @return JsonResponse
+     * @throws \Exception
      */
     public function addImg(Request $request, $salon)
     {

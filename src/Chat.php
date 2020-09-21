@@ -135,8 +135,6 @@ class Chat implements MessageComponentInterface
      * @param ConnectionInterface $conn
      * @param $channel
      * @param $user
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     private function exit(ConnectionInterface $conn, $channel, $user)
     {

@@ -178,7 +178,11 @@
 
             $(".emoji").on("click",function () {
                 console.log(this);
-                document.getElementById("inputMsg").value += this.alt;
+                let div = this.parentNode.parentNode;
+                console.log(div);
+
+                if(!div.classList.contains('emoji-selectables'))
+                    document.getElementById("inputMsg").value += this.alt;
             });
         });
 
@@ -210,7 +214,6 @@
                             user: username
                         })
                     );
-                    return;
                 }
             });
         }

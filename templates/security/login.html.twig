@@ -5,12 +5,19 @@
 <link rel="stylesheet" href="{{ asset('css/bootstrap-reboot.css') }}">
 <link rel="stylesheet" href="{{ asset('css/connexion.css') }}">
 <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/onglet.png') }}"/>
+<style>
+    .alert.alert-danger{
+        z-index: 10;
+        bottom: -220px;
+    }
+</style>
 <head>
     <meta charset="UTF-8"/>
     <title>UCO : connexion</title>
 </head>
 
 <body>
+
     <div class="row" >
 
         <div class="col-4 offset-4" style="margin-top: 5%; padding: 10px; text-align: center" >
@@ -39,10 +46,10 @@
 
                 <label for="inputUsername" style="font-weight: bold;">Nom d'utilisateur :</label>
                 <input type="text" value="{{ last_username }}" name="username" id="inputUsername"
-                       class="form-control styl" required autofocus>
+                       class="form-control styl" required autofocus autocomplete="off">
                 <br>
                 <label for="inputPassword" style="font-weight: bold;">Mot de passe :</label>
-                <input type="password" name="password" id="inputPassword" class="form-control styl" required>
+                <input type="password" name="password" id="inputPassword" class="form-control styl" required autocomplete="off">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                 {#

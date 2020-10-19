@@ -14,23 +14,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add("userNom", HiddenType::class, ["mapped" => false])
-            ->add("userPrenom",HiddenType::class, ["mapped" => false])
-            ->add("userDateArrivee", HiddenType::class, ["mapped" => false])
-            ->add("userEmail", EmailType::class, ["label" => "Adresse mail :"])
-            ->add("roles", HiddenType::class, ["mapped" => false])
-            ->add('username', TextType::class, ["label" => "Nom d'utilisateur : "])
+            ->add("userNom", HiddenType::class, ["mapped" => false, 'attr'=>['autocomplete' => 'off']])
+            ->add("userPrenom",HiddenType::class, ["mapped" => false, 'attr'=>['autocomplete' => 'off']])
+            ->add("userDateArrivee", HiddenType::class, ["mapped" => false, 'attr'=>['autocomplete' => 'off']])
+            ->add("userEmail", EmailType::class, ["label" => "Adresse mail :", 'attr'=>['autocomplete' => 'off']])
+            ->add("roles", HiddenType::class, ["mapped" => false, 'attr'=>['autocomplete' => 'off']])
+            ->add('username', TextType::class, ["label" => "Nom d'utilisateur : ", 'attr'=>['autocomplete' => 'off']])
             ->add('agreeTerms', CheckboxType::class, [
                 "label" => "Conditions d'utilisations",
                 'mapped' => false,
-                'attr' => ["Class" => "checkboxInput"],
+                'attr' => ["Class" => "checkboxInput", 'autocomplete' => 'off'],
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Vous devez accepter les conditions d\'utilisation',

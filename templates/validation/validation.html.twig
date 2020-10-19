@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <title>UCO : validation</title>
+
+    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/fontawesome-iconpicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/onglet.png') }}"/>
+</head>
+<body>
+<div class="page-wrapper chiller-theme toggled">
+
+    <!-- sidebar-wrapper  -->
+    <main class="page-content" style="height: 100%">
+        <div class="col-12">
+            <img id="loader" src="{{ asset('img/Loader.gif') }}" alt=""/>
+            <h4 class="col-12">Bienvenu</h4>
+            <div class="col-12">
+                <p>{{ message }}</p>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+
+</html>

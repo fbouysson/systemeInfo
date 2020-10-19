@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\AffectationSalon;
+use App\Entity\CompteStatut;
 use App\Entity\Logs;
 use App\Entity\Messages;
 use App\Entity\Salons;
@@ -20,6 +21,17 @@ class MenuController extends AbstractController
         $em = $this->getDoctrine()->getManager("SYSTEME_INFO");
 
         $user = $this->getUser();
+
+        if($user->getUsername() == "user"){
+            $statut = $em->getRepository(CompteStatut::class)->findOneBy(['username' => $user->getUsername()]);
+
+            if($statut == null || !$statut->getCompteStatut()){
+                return $this->render('validation/validation.html.twig', [
+                    'message' => "Veuiller valider votre adress mail !",
+                ]);
+            }
+        }
+
         $username = $user->getUsername();
 
         $messages = $em->getRepository(Messages::class)->findBy(["idSalon" => 1],array("idMessages" => "asc"));

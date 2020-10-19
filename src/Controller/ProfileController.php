@@ -20,6 +20,7 @@ class ProfileController extends AbstractController
 {
     /**
      * @Route("/profile", name="profile")
+     * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @return RedirectResponse|Response
      * @throws Exception

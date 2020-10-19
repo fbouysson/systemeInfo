@@ -39,7 +39,7 @@
 
 <div class="main row" style="border: 2px solid lightgrey; padding: 10px">
     <h1>Ultimate Chat Online</h1>
-    <div style="display: inline-block" class="col-12 divForm">
+    <div style="display: inline-block; overflow-y: auto !important;" class="col-12 divForm">
         {{ form_start(registrationForm, {'attr':{'onsubmit': 'return validatePassword()'}}) }}
         <div class="col-10 divInnerForm">
             {{ form_row(registrationForm.username) }}

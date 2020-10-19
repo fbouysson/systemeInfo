@@ -23,8 +23,8 @@ Il y aura un historique des messages, avec la fonctionnalité de messages non lu
 
 TECHNOLOGIES UTILISEES :
 
-Développement : HTML/CSS pour l'interface web, PHP pour l'interaction avec les bases de données,nodeJS pour certains scripts, MySQL la DB
-Réseau : 5 VM (4 windows serveur, 1 windows client), 4 routeurs, 1 switch
+Développement : Framework Symfony - HTML/CSS pour l'interface web, PHP pour l'interaction avec les bases de données,nodeJS pour certains scripts, MySQL la DB
+Réseau : 5 VMs (4 windows serveur, 1 windows client), 4 routeurs, 1 switch
 
 *********************************************************************************************************
 

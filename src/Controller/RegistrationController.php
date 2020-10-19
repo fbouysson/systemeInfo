@@ -25,7 +25,7 @@ class RegistrationController extends AbstractController
      * @param GuardAuthenticatorHandler $guardHandler
      * @param UCOAuthenticator $authenticator
      * @return Response
-     * @throws Exception
+     * @throws \Exception
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UCOAuthenticator $authenticator): Response
     {
@@ -56,7 +56,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($statut);
             $entityManager->flush();
 
-            $corpmail = "Bonjour, merci de valider votre adresse EMail : <a href='http://192.168.1.36:81/validation/".$user->getUsername()."/".$token."'>Valider</a>";
+            $corpmail = "Bonjour, merci de valider votre adresse EMail : <a href='http://192.168.1.36:81/register/validation/".$user->getUsername()."/".$token."'>Valider</a>";
 
             $mailer = new Swift_Mailer((new Swift_SmtpTransport('192.168.1.10', 25)));
 

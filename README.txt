@@ -23,10 +23,12 @@ Il y aura un historique des messages, avec la fonctionnalité de messages non lu
 
 TECHNOLOGIES UTILISEES :
 
-Développement : HTML/CSS pour l'interface web, PHP pour l'interaction avec les bases de données,JS pour certains scripts, MySQL la DB
-Réseau : 4 VM (3 windows serveur, 1 windows client), 3 routeurs, 2 switch
+Développement : HTML/CSS pour l'interface web, PHP pour l'interaction avec les bases de données,nodeJS pour certains scripts, MySQL la DB
+Réseau : 5 VM (4 windows serveur, 1 windows client), 4 routeurs, 1 switch
 
 *********************************************************************************************************
 
 METHODE DE COMPILATION/INSTALLATION
+
+Connexion via URL
 

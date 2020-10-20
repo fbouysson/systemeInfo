@@ -56,6 +56,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($statut);
             $entityManager->flush();
 
+            /*
             $corpmail = "Bonjour, merci de valider votre adresse EMail : <a href='http://192.168.1.36:81/register/validation/".$user->getUsername()."/".$token."'>Valider</a>";
 
             $mailer = new Swift_Mailer((new Swift_SmtpTransport('192.168.1.10', 25)));
@@ -71,7 +72,7 @@ class RegistrationController extends AbstractController
                 );
 
             $mailer->send($message);
-
+*/
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,

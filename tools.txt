@@ -7,3 +7,6 @@ php bin/console doctrine:mapping:import "App\Entity" annotation --path=src/Entit
 ############## generate getter/setter ##############
 php bin/console make:entity --regenerate App
 php bin/console make:entity --regenerate App\Entity\Login
+
+
+php bin/console make:migration --em=SYSTEME_INFO
